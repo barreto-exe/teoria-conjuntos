@@ -1,14 +1,3 @@
-
-*.cbp
-
-*.layout
-
-*.depend
-
 bin/Debug/
-
-*.temp
-
-.goutputstream-NRDCA0
 
 obj/Debug/
