@@ -28,7 +28,7 @@ Elemento *crearElemento(char *valor){
     return aux;
 }
 
-void crearConjunto(ListaConjuntos clist, char *nombre, char **elementos, int cantElem){
+void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
     /*
         -elementos es un arreglo de strings. Cada string es un elemento.
         -El nuevo conjunto se le asigna como next al ultimo de la lista conjunto
@@ -48,16 +48,43 @@ void crearConjunto(ListaConjuntos clist, char *nombre, char **elementos, int can
     nuevo->ultimo = aux;
     nuevo->next = NULL;
 
-    if (!clist.universo)
-        clist.universo = nuevo;
+    if (!clist->universo)
+        clist->universo = nuevo;
 
-    if (clist.ultimo)
-        clist.ultimo->next = nuevo;
+    if (clist->ultimo)
+        clist->ultimo->next = nuevo;
 
-    clist.ultimo = nuevo;
+    clist->ultimo = nuevo;
 }
 
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
+    Conjunto *caux = clist.universo;
+    int encontrado = 0;
+
+    while(!encontrado && caux){
+        if( strcmp(caux->nombre,cnombre) == 0 ){
+            encontrado = 1;
+        }
+        else{
+            caux = caux->next;
+        }
+    }
+
+    if(!encontrado){
+        printf("No se encontro el conjunto");
+        return;
+    }
+
+    Elemento *eleaux = caux->primero;
+
+
+    for(;eleaux!=NULL;eleaux=eleaux->next){
+        if(eleaux->next)
+            printf("%s - ",eleaux->valor);
+        else
+            printf("%s",eleaux->valor);
+    }
+
 }
 
 int existeElemento(ListaConjuntos clist, Conjunto c, Elemento e){
