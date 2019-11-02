@@ -2,6 +2,10 @@
 
 void test();
 
+void Diego(){
+}
+
+
 int main()
 {
     test();
