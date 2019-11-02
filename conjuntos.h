@@ -10,14 +10,14 @@ typedef struct elemento {
 
 typedef struct conjunto {
     char *nombre;
-    Elemento *primero,
-             *ultimo;
+    struct elemento *primero,
+                    *ultimo;
     struct conjunto *next;
 } Conjunto;
 
 typedef struct ListaConjuntos {
-    Conjunto *universo, //El primer conjunto de la lista.
-             *ultimo;
+    struct conjunto *universo, //El primer conjunto de la lista.
+                    *ultimo;
 } ListaConjuntos;
 
 Elemento *crearElemento(char *valor){
@@ -48,11 +48,13 @@ void crearConjunto(ListaConjuntos clist, char *nombre, char **elementos, int can
     nuevo->ultimo = aux;
     nuevo->next = NULL;
 
-    if (!clist->universo)
-        clist->universo = nuevo;
+    if (!clist.universo)
+        clist.universo = nuevo;
 
-    clist->ultimo->next = nuevo;
-    clist->ultimo = nuevo;
+    if (clist.ultimo)
+        clist.ultimo->next = nuevo;
+
+    clist.ultimo = nuevo;
 }
 
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
