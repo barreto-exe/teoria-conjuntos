@@ -126,14 +126,14 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
 
 }
 
-void unirConjunto(ListaConjuntos clist, Conjunto a, Conjunto b){
+void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
     /*
       -Ambos conjuntos deben existir
       -Primero compruebo que exista AUB, sino, creo dicho conjunto.
     */
 }
 
-void intersectarConjunto(ListaConjuntos clist, Conjunto a, Conjunto b){
+void intersectarConjunto(ListaConjuntos *clist, Conjunto a, Conjunto b){
     /*
       -Ambos conjuntos deben existir.
       -Primero compruebo que exista AxB, sino, lo creo.
@@ -141,7 +141,7 @@ void intersectarConjunto(ListaConjuntos clist, Conjunto a, Conjunto b){
 
 }
 
-void invertirConjunto(ListaConjuntos clist, Conjunto a){
+void invertirConjunto(ListaConjuntos *clist, Conjunto a){
     /*
       -Si no existe -A, lo creo.
       -El inverso de un conjunto vacío es universo.
