@@ -70,25 +70,29 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
     }
 
     nuevo->nombre = nombre;
+    //El nuevo conjunto será el ultimo
+    if (clist->ultimo)
+        clist->ultimo->next = nuevo;
+    clist->ultimo = nuevo;
+    nuevo->next = NULL;
 
     //Validación de que el conjunto sea vacío o no.
     if(cantElem){
         Elemento *aux = nuevo->primero = crearElemento(elementos[0]);
 
         for(int i=1; i<cantElem; i++){
-            aux->next = crearElemento(elementos[i]);
-            if(i+1<cantElem)
-                aux=aux->next;
+            char *eleaux[]={elementos[i]};
+
+            //Crea el elemento sólo si no existe previamente
+            if(!elementosPertenecen(nuevo,eleaux,1)){
+                aux->next = crearElemento(elementos[i]);
+                if(i+1<cantElem)
+                    aux=aux->next;
+            }
         }
     }else{
         nuevo->primero = NULL;
     }
-
-    //El nuevo conjunto será el ultimo
-    if (clist->ultimo)
-        clist->ultimo->next = nuevo;
-    clist->ultimo = nuevo;
-    nuevo->next = NULL;
 
 }
 
@@ -120,12 +124,6 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
             printf("%s",eleaux->valor);
     }
 
-}
-
-int existeElemento(ListaConjuntos clist, Conjunto c, Elemento e){
-    /*
-      -El conjunto debe existir
-    */
 }
 
 void unirConjunto(ListaConjuntos clist, Conjunto a, Conjunto b){
