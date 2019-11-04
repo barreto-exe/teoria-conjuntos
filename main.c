@@ -15,8 +15,8 @@ void test(){
     clist.ultimo = NULL;
     clist.universo = NULL;
 
-    char *universo[] = {"Hola","Mundo","Todo","Bien","AAAAA"};
-    char *conjA[] = {"A","B","C","D","E"};
+    char *universo[] = {"Hoola","Mundo","Todo","Bien","AAAAA"};
+    char *conjA[] = {"AAAAA","Todo","Todo","Bien","Bien"};
 
     crearConjunto(&clist,"universo",universo,5);
     imprimirConjunto(clist,"universo");

@@ -9,8 +9,8 @@ typedef struct elemento {
 
 typedef struct conjunto {
     char *nombre;
-    struct elemento *primero,
-                    *ultimo;
+    struct elemento *primero;
+                    //*ultimo;
     struct conjunto *next;
 } Conjunto;
 
@@ -27,6 +27,30 @@ Elemento *crearElemento(char *valor){
     return aux;
 }
 
+int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
+    /*
+        Si el conjunto es vacío (tiene 0 elementos), entonces siempre
+        es subconjunto de cualquier conjunto.
+    */
+    for(int i=0; i < cantElem; i++){
+        Elemento *aux = c->primero;
+        int encontrado = 0;
+
+        while(aux && !encontrado){
+            if(strcmp(elementos[i],aux->valor) == 0){
+                encontrado = 1;
+            }
+            else{
+                aux = aux->next;
+            }
+        }
+
+        if(!encontrado) return 0;
+    }
+
+    return 1;
+}
+
 void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
     /*
         -elementos es un arreglo de strings. Cada string es un elemento.
@@ -35,25 +59,37 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
 
     Conjunto *nuevo = (Conjunto *) malloc(sizeof(Conjunto));
 
-    nuevo->nombre = nombre;
-    Elemento *aux = nuevo->primero = crearElemento(elementos[0]);
-
-    for(int i=1; i<cantElem; i++){
-        aux->next = crearElemento(elementos[i]);
-        if(i+1<cantElem)
-            aux=aux->next;
-    }
-
-    nuevo->ultimo = aux;
-    nuevo->next = NULL;
-
     if (!clist->universo)
         clist->universo = nuevo;
+    else{
+        if(!elementosPertenecen(clist->universo,elementos,cantElem)){
+            free(nuevo);
+            printf("No se pudo crear el conjunto %s, porque tiene elementos invalidos \n",nombre);
+            return;
+        }
+    }
 
+    nuevo->nombre = nombre;
+
+    //Validación de que el conjunto sea vacío o no.
+    if(cantElem){
+        Elemento *aux = nuevo->primero = crearElemento(elementos[0]);
+
+        for(int i=1; i<cantElem; i++){
+            aux->next = crearElemento(elementos[i]);
+            if(i+1<cantElem)
+                aux=aux->next;
+        }
+    }else{
+        nuevo->primero = NULL;
+    }
+
+    //El nuevo conjunto será el ultimo
     if (clist->ultimo)
         clist->ultimo->next = nuevo;
-
     clist->ultimo = nuevo;
+    nuevo->next = NULL;
+
 }
 
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
@@ -70,13 +106,13 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
     }
 
     if(!encontrado){
-        printf("No se encontro el conjunto");
+        printf("No se encontro el conjunto %s\n", cnombre);
         return;
     }
 
     Elemento *eleaux = caux->primero;
 
-
+    printf("%s: ", cnombre);
     for(;eleaux!=NULL;eleaux=eleaux->next){
         if(eleaux->next)
             printf("%s - ",eleaux->valor);
