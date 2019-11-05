@@ -96,7 +96,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
 
 }
 
-void imprimirConjunto(ListaConjuntos clist, char *cnombre){
+Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = clist.universo;
     int encontrado = 0;
 
@@ -110,9 +110,21 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
     }
 
     if(!encontrado){
+        return NULL;
+    }
+
+    return caux;
+}
+
+void imprimirConjunto(ListaConjuntos clist, char *cnombre){
+    Conjunto *caux;
+
+    //Si el elemento no existe, retorno
+    if( !(caux = buscarConjunto(clist,cnombre)) ){
         printf("No se encontro el conjunto %s\n", cnombre);
         return;
     }
+
 
     Elemento *eleaux = caux->primero;
 
@@ -121,9 +133,16 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
         if(eleaux->next)
             printf("%s - ",eleaux->valor);
         else
-            printf("%s",eleaux->valor);
+            printf("%s \n",eleaux->valor);
     }
 
+}
+
+char **conjunto2char(Conjunto c){
+    int cantElem = 0;
+    Elemento *aux = c.primero;
+
+    //char **aux = (char **)  malloc
 }
 
 void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
@@ -131,20 +150,89 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
       -Ambos conjuntos deben existir
       -Primero compruebo que exista AUB, sino, creo dicho conjunto.
     */
+    char newname[strlen(conja)+strlen(conjb)+1];
+    strcpy(newname,conja);
+    strcat(newname,"U");
+    strcat(newname,conjb);
+
+    Conjunto *a   = buscarConjunto(*clist,conja),
+             *b   = buscarConjunto(*clist,conjb),
+             *aub = buscarConjunto(*clist,newname);
+
+    if(!(a && b)){
+        printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
+        return;
+    }
+
+    if(aub){
+        imprimirConjunto(*clist,newname);
+        return;
+    }
+
+
+
+
+    /*
+    if(!a){
+        char **conj = conjunto2char(b);
+
+        int tamConj = (sizeof(tamConj)/sizeof(char *));
+        crearConjunto(*clist, nombre, ,tamConj);
+    }
+    */
 }
 
-void intersectarConjunto(ListaConjuntos *clist, Conjunto a, Conjunto b){
+void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
     /*
       -Ambos conjuntos deben existir.
       -Primero compruebo que exista AxB, sino, lo creo.
     */
 
+    char newname[strlen(conja)+strlen(conjb)+1];
+    strcpy(newname,conja);
+    strcat(newname,"x");
+    strcat(newname,conjb);
+
+    Conjunto *a   = buscarConjunto(*clist,conja),
+             *b   = buscarConjunto(*clist,conjb),
+             *aub = buscarConjunto(*clist,newname);
+
+    if(!(a && b)){
+        printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
+        return;
+    }
+
+    if(aub){
+        imprimirConjunto(*clist,newname);
+        return;
+    }
+
+
+
+
 }
 
-void invertirConjunto(ListaConjuntos *clist, Conjunto a){
+void invertirConjunto(ListaConjuntos *clist, char *namec){
     /*
       -Si no existe -A, lo creo.
       -El inverso de un conjunto vacío es universo.
     */
+
+    char newname[strlen(namec)+1];
+    strcpy(newname,"-");
+    strcat(newname,namec);
+
+    Conjunto *c      = buscarConjunto(*clist,namec),
+             *menosc = buscarConjunto(*clist,newname);
+
+    if(!c){
+        printf("Fallo al crear el conjunto %s. No existe el conjunto %s. \n",newname,namec);
+        return;
+    }
+
+    if(menosc){
+        imprimirConjunto(*clist,newname);
+        return;
+    }
 
 }
