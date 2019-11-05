@@ -116,6 +116,26 @@ Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     return caux;
 }
 
+Elemento *buscarElemento(Conjunto c, char *enombre){
+    Elemento *aux = c.primero;
+    int encontrado = 0;
+
+    while(!encontrado && aux){
+        if( strcmp(aux->valor,enombre) == 0 ){
+            encontrado = 1;
+        }
+        else{
+            aux = aux->next;
+        }
+    }
+
+    if(!encontrado){
+        return NULL;
+    }
+
+    return aux;
+}
+
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux;
 
@@ -171,6 +191,8 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
 
 
+    //crearConjunto(clist,newname,,);
+    return;
 
     /*
     if(!a){
@@ -235,4 +257,19 @@ void invertirConjunto(ListaConjuntos *clist, char *namec){
         return;
     }
 
+    char *newElem[] = {};
+    crearConjunto(clist,newname,newElem,0);
+    Elemento *univAux = clist->universo->primero, *eleAux;
+    Conjunto *newC= buscarConjunto(*clist,newname);
+
+    do{
+        //Si el elemento del universo no existe en C, entonces se añade al nuevo conjunto.
+        if( !buscarElemento(*c,univAux->valor) && !newC->primero ){
+            newC->primero = eleAux = crearElemento(univAux->valor);
+        }else if (!buscarElemento(*c,univAux->valor)){
+            eleAux->next = crearElemento(univAux->valor);
+            eleAux = eleAux->next;
+        }
+        univAux = univAux->next;
+    }while(univAux);
 }
