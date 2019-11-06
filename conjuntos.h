@@ -217,20 +217,37 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
     Conjunto *a   = buscarConjunto(*clist,conja),
              *b   = buscarConjunto(*clist,conjb),
-             *aub = buscarConjunto(*clist,newname);
+             *axb = buscarConjunto(*clist,newname);
 
     if(!(a && b)){
         printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
         return;
     }
 
-    if(aub){
+    if(axb){
         imprimirConjunto(*clist,newname);
         return;
     }
 
+    char *newElem[] = {};
+    crearConjunto(clist,newname,newElem,0);
+
+    if(!(a->primero && b->primero)) return;
 
 
+    Elemento *auxA = a->primero, *eleAux;
+    Conjunto *newC= buscarConjunto(*clist,newname);
+
+    do{
+        if(buscarElemento(*b,auxA->valor) && !newC->primero){
+            newC->primero = eleAux = crearElemento(auxA->valor);
+        }else if(buscarElemento(*b,auxA->valor)){
+            eleAux->next = crearElemento(auxA->valor);
+            eleAux = eleAux->next;
+        }
+
+        auxA = auxA->next;
+    }while(auxA);
 
 }
 

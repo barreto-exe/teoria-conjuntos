@@ -39,7 +39,14 @@ void test(){
     imprimirConjunto(clist,"B");
     printf("\n");
 
+    /*
     invertirConjunto(&clist,"B");
     imprimirConjunto(clist,"-B");
+    printf("\n");
+    */
+
+    intersectarConjunto(&clist,"A","B");
+    imprimirConjunto(clist,"AxB");
+    printf("\n");
 
 }
