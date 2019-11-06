@@ -15,7 +15,6 @@ int main () {
          }
    }
    ContPalabras++;
-   int contador=strlen(str2);
    char **puntero = NULL;
    int i,j=0;
    puntero = (char **)malloc(ContPalabras*sizeof(char*)); //Reservar memoria
@@ -38,7 +37,7 @@ int main () {
       if(!fin){
          fin = str2 + strlen(str2);
       }
-      printf("%s", puntero[i]);
+
    }
    fclose(fp);
    return(0);

@@ -1,5 +1,7 @@
 #include "conjuntos.h"
 #include "comandos.h"
+#include<stdio.h>
+#include<stdlib.h>
 void test();
 
 void LeerArchivo();
@@ -36,15 +38,18 @@ void test(){
 }
 void LeerArchivo(){
    char NombreArchivo[40];
-   printf("%s",NombreArchivo);
+   printf("Ingrese el nombre del archivo que desea abrir: ");
+   scanf("%s",NombreArchivo);
    char str1[10], str2[40];
    FILE *fpuntero;
-   fpuntero = fopen (NombreArchivo, "r");
+   fpuntero = fopen ("file.txt", "r");
    fscanf(fpuntero, "%s %s", str1, str2);
    Elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
-   while(!feof(fpuntero)){
-      fscanf(fpuntero, "%s %s", str1, str2);
-      Elementos(str2); //Este lee los conjuntos, no se a quien se lo quieras pasar
+   while(feof(fpuntero) == 0){
+      char str3[40];
+      fscanf(fpuntero, "%s %s %s", str1, str2, str3);
+      Elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
    }
-
+   fclose(fpuntero); //Da error aca
+   return;
 }

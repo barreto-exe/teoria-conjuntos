@@ -12,16 +12,17 @@ int ContarLetras(char str[],int inicio){
 char **Elementos(char str[]){
    char **puntero = NULL;
 
-   if(!strstr(str,'-')){
+   /*if(!strstr(str,'-')){
       if(strlen(str)>0){
          puntero = (char **)malloc(sizeof(char*));
          puntero[0] = (char*)malloc(strlen(str)*sizeof(char)+1);
          strcpy(puntero[0],str);
          return puntero;
       }else{
+         puntero=' ';
          return puntero;
       }
-   }
+   }*/
 
    int ContPalabras=0;
    for(int i=0 ; str[i]!='\0' ;i++){
@@ -53,5 +54,5 @@ char **Elementos(char str[]){
          fin = str + strlen(str);
       }
    }
-   return puntero[0];
+   return puntero;
 }
