@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1572999167 source:/media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/main.c
+1573008131 source:/media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/main.c
 	"conjuntos.h"
 
-1572999535 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/conjuntos.h
+1573008712 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/conjuntos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

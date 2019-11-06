@@ -19,6 +19,7 @@ typedef struct ListaConjuntos {
                     *ultimo;
 } ListaConjuntos;
 
+
 Elemento *crearElemento(char *valor){
     Elemento *aux = (Elemento *) malloc(sizeof(Elemento));
     aux->valor = valor;
@@ -70,6 +71,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
     }
 
     nuevo->nombre = nombre;
+
     //El nuevo conjunto será el ultimo
     if (clist->ultimo)
         clist->ultimo->next = nuevo;
@@ -109,9 +111,7 @@ Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
         }
     }
 
-    if(!encontrado){
-        return NULL;
-    }
+    if(!encontrado) return NULL;
 
     return caux;
 }
@@ -137,10 +137,10 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
 }
 
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
-    Conjunto *caux;
+    Conjunto *caux = buscarConjunto(clist,cnombre);
 
     //Si el elemento no existe, retorno
-    if( !(caux = buscarConjunto(clist,cnombre)) ){
+    if( !caux ){
         printf("No se encontro el conjunto %s\n", cnombre);
         return;
     }
@@ -158,21 +158,14 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
 
 }
 
-char **conjunto2char(Conjunto c){
-    int cantElem = 0;
-    Elemento *aux = c.primero;
-
-    //char **aux = (char **)  malloc
-}
-
 void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
     /*
       -Ambos conjuntos deben existir
       -Primero compruebo que exista AUB, sino, creo dicho conjunto.
     */
-    char newname[strlen(conja)+strlen(conjb)+1];
+    char *newname = (char *) malloc(strlen(conja)+strlen(conjb)+1);
     strcpy(newname,conja);
-    strcat(newname,"U");
+    strcat(newname,"u");
     strcat(newname,conjb);
 
     Conjunto *a   = buscarConjunto(*clist,conja),
@@ -184,24 +177,41 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
         return;
     }
 
-    if(aub){
-        imprimirConjunto(*clist,newname);
-        return;
+    if(aub) return;
+
+    char *newElem[] = {};
+    crearConjunto(clist,newname,newElem,0);
+
+    if(!a->primero && !b->primero) return;
+
+
+
+    Elemento *auxA = a->primero, *auxB = b->primero, *eleAux;
+    Conjunto *newC= buscarConjunto(*clist,newname);
+
+    if(a->primero){
+        do{
+            if(!newC->primero){
+                newC->primero = eleAux = crearElemento(auxA->valor);
+            }else if(!buscarElemento(*newC,auxA->valor)){
+                eleAux->next = crearElemento(auxA->valor);
+                eleAux = eleAux->next;
+            }
+            auxA = auxA->next;
+        }while(auxA);
     }
 
-
-
-    //crearConjunto(clist,newname,,);
-    return;
-
-    /*
-    if(!a){
-        char **conj = conjunto2char(b);
-
-        int tamConj = (sizeof(tamConj)/sizeof(char *));
-        crearConjunto(*clist, nombre, ,tamConj);
+    if(b->primero){
+        do{
+            if(!newC->primero){
+                newC->primero = eleAux = crearElemento(auxB->valor);
+            }else if(!buscarElemento(*newC,auxB->valor)){
+                eleAux->next = crearElemento(auxB->valor);
+                eleAux = eleAux->next;
+            }
+            auxB = auxB->next;
+        }while(auxB);
     }
-    */
 }
 
 void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
@@ -210,7 +220,7 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
       -Primero compruebo que exista AxB, sino, lo creo.
     */
 
-    char newname[strlen(conja)+strlen(conjb)+1];
+    char *newname = (char *) malloc(strlen(conja)+strlen(conjb)+1);
     strcpy(newname,conja);
     strcat(newname,"x");
     strcat(newname,conjb);
@@ -224,16 +234,12 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
         return;
     }
 
-    if(axb){
-        imprimirConjunto(*clist,newname);
-        return;
-    }
+    if(axb) return;
 
     char *newElem[] = {};
     crearConjunto(clist,newname,newElem,0);
 
     if(!(a->primero && b->primero)) return;
-
 
     Elemento *auxA = a->primero, *eleAux;
     Conjunto *newC= buscarConjunto(*clist,newname);
@@ -257,7 +263,7 @@ void invertirConjunto(ListaConjuntos *clist, char *namec){
       -El inverso de un conjunto vacío es universo.
     */
 
-    char newname[strlen(namec)+1];
+    char *newname = (char *) malloc(strlen(namec)+1);
     strcpy(newname,"-");
     strcat(newname,namec);
 
@@ -269,10 +275,7 @@ void invertirConjunto(ListaConjuntos *clist, char *namec){
         return;
     }
 
-    if(menosc){
-        imprimirConjunto(*clist,newname);
-        return;
-    }
+    if(menosc) return;
 
     char *newElem[] = {};
     crearConjunto(clist,newname,newElem,0);
