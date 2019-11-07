@@ -10,8 +10,9 @@ void LeerArchivo();
 
 int main()
 {
-    LeerArchivo();
+    //LeerArchivo();
     //test();
+    test2();
     return 0;
 }
 
@@ -62,7 +63,23 @@ void test(){
 
 
 }
-void LeerArchivo(){
+
+void test2(){
+
+   ListaConjuntos clist;
+   clist.ultimo = NULL;
+   clist.universo = NULL;
+
+   LeerArchivo(&clist);
+
+   imprimirConjunto(clist,"universo");
+   imprimirConjunto(clist,"conj");
+
+   //printf("%s",clist->universo->nombre);
+
+}
+
+void LeerArchivo(ListaConjuntos *lc){
    char NombreArchivo[40] = "file.txt";
    printf("Ingrese el nombre del archivo que desea abrir: \n");
    printf("\n");
@@ -78,8 +95,14 @@ void LeerArchivo(){
     return;
    }
 
+   lc->ultimo = NULL;
+   lc->universo = NULL;
+
+
    while(fgets(linea, 1024, fpuntero)){
-      char *inicio, *fin, cname[26];
+      char *inicio, *fin, *cname;
+
+      cname = (char *) malloc(sizeof(char)*26);
 
       inicio = fin = linea;
       fin = strstr(fin,":");
@@ -94,10 +117,13 @@ void LeerArchivo(){
          fin = "hola-como-estas"
       */
 
-      str2elementos(fin); //Este lee los conjuntos, no se a quien se lo quieras pasar
+      int cantElem;
+      char **elementsC = str2elementos(fin,&cantElem);
+
+      //printf("%p %p",lc->universo,lc->ultimo);
+      crearConjunto(lc,cname,elementsC,cantElem);
    }
 
    fclose(fpuntero);
-
    return;
 }

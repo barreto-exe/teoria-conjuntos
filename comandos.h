@@ -9,7 +9,22 @@ int ContarLetras(char str[],int inicio){
     }
     return Cont;
 }
-char **str2elementos(char str[]){
+char **str2elementos(char str[], int *cantElem){
+   /*
+      VALIDAR CASOS COMO:
+         hola-como-estas
+         hola-como-estas-
+         hola - como - estas
+         hola - como - estas -
+         -hola-como
+         -hola-como-
+         - hola - como
+         - hola - como -
+         hola
+
+   */
+
+
    char **puntero = NULL;
 
    /*if(!strstr(str,'-')){
@@ -24,15 +39,16 @@ char **str2elementos(char str[]){
       }
    }*/
 
-   int ContPalabras=0;
-   for(int i=0 ; str[i]!='\0' ;i++){
+   int ContPalabras=0, i;
+   for(i=0 ; str[i]!='\0' ;i++){
          if(str[i]=='-'){
             ContPalabras++;
          }
    }
-   ContPalabras++;
 
-   int i,j=0;
+   if(i>0) ContPalabras++; //Si la cadena es vacía, se queda en 0.
+
+   int j=0;
    puntero = (char **)malloc(ContPalabras*sizeof(char*)); //Reservar memoria
    for( i=0 ; i<strlen(str)+2 ; i++){
       if(str[i] == '-' || str[i] == '\0' ){ //Tengo que cambiar ese  'i' por /0
@@ -53,6 +69,10 @@ char **str2elementos(char str[]){
       if(!fin){
          fin = str + strlen(str);
       }
+
+      //printf("%s-",puntero[i]);
    }
+
+   *cantElem = ContPalabras;
    return puntero;
 }
