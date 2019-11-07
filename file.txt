@@ -1,2 +1,2 @@
 universo: A-B-C
-conj: A-B-C
+A: A-B

@@ -66,7 +66,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
         //printf("%p %p",clist->universo,clist->ultimo);
         if(!elementosPertenecen(clist->universo,elementos,cantElem)){
             free(nuevo);
-            printf("No se pudo crear el conjunto %s, porque tiene elementos invalidos \n",nombre);
+            printf("No se pudo crear el conjunto %s, porque tiene elementos invalidos %s\n",nombre);
             return;
         }
     }

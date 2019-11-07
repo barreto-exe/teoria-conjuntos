@@ -74,9 +74,10 @@ void test2(){
    LeerArchivo(&clist);
 
    imprimirConjunto(clist,"universo");
-   imprimirConjunto(clist,"conj");
+   printf("\n");
 
-   //printf("%s",clist->universo->nombre);
+   imprimirConjunto(clist, "A");
+
 
 }
 
@@ -104,6 +105,8 @@ void LeerArchivo(ListaConjuntos *lc){
    while(fgets(linea, 1024, fpuntero)){
       char *inicio, *fin, *cname;
 
+      linea[strlen(linea)-1]='\0'; //Esto corrige el caracter '\n' al final de la linea
+
       cname = (char *) malloc(sizeof(char)*26);
 
       inicio = fin = linea;
@@ -111,18 +114,10 @@ void LeerArchivo(ListaConjuntos *lc){
       strncpy(cname,inicio,fin-inicio);
       fin += 2;
 
-      /*
-      Una corrida en frío de lo anterior:
-
-         linea = "universo12345: hola-como-estas"
-         cname = "universo12345"
-         fin = "hola-como-estas"
-      */
 
       int cantElem;
       char **elementsC = str2elementos(fin,&cantElem);
 
-      //printf("%p %p",lc->universo,lc->ultimo);
       crearConjunto(lc,cname,elementsC,cantElem);
    }
    fclose(fpuntero);

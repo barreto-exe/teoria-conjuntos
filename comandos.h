@@ -10,34 +10,16 @@ int ContarLetras(char str[],int inicio){
     return Cont;
 }
 char **str2elementos(char str[], int *cantElem){
-   /*
-      VALIDAR CASOS COMO:
-         hola-como-estas
-         hola-como-estas-
-         hola - como - estas
-         hola - como - estas -
-         -hola-como
-         -hola-como-
-         - hola - como
-         - hola - como -
-         hola
-
-   */
-
 
    char **puntero = NULL;
 
-   /*if(!strstr(str,'-')){
-      if(strlen(str)>0){
-         puntero = (char **)malloc(sizeof(char*));
-         puntero[0] = (char*)malloc(strlen(str)*sizeof(char)+1);
-         strcpy(puntero[0],str);
-         return puntero;
-      }else{
-         puntero=' ';
-         return puntero;
-      }
-   }*/
+   if(!strstr(str,"-") && strlen(str)>0){
+      puntero = (char **)malloc(sizeof(char*));
+      puntero[0] = (char*)malloc(strlen(str)*sizeof(char)+1);
+      strcpy(puntero[0],str);
+      *cantElem = 1;
+      return puntero;
+   }
 
    int ContPalabras=0, i;
    for(i=0 ; str[i]!='\0' ;i++){
@@ -49,9 +31,9 @@ char **str2elementos(char str[], int *cantElem){
    if(i>0) ContPalabras++; //Si la cadena es vacía, se queda en 0.
 
    int j=0;
-   puntero = (char **)malloc(ContPalabras*sizeof(char*)); //Reservar memoria
+   puntero = (char **)malloc(ContPalabras*sizeof(char*));
    for( i=0 ; i<strlen(str)+2 ; i++){
-      if(str[i] == '-' || str[i] == '\0' ){ //Tengo que cambiar ese  'i' por /0
+      if(str[i] == '-' || str[i] == '\0' ){
          puntero[j] = (char*)malloc(ContarLetras(str,i)*sizeof(char)+1);
          j++;
       }
@@ -60,6 +42,9 @@ char **str2elementos(char str[], int *cantElem){
    char *inicio, *fin;
    inicio = str;
    fin = strstr(str,"-");
+   if(!fin){
+      fin = inicio + strlen(inicio);
+   }
 
    for(i=0 ; i<ContPalabras ; i++){
       strncpy(puntero[i],inicio,fin-inicio);
