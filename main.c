@@ -12,7 +12,8 @@ int main()
 {
     //LeerArchivo();
     //test();
-    test2();
+    //test2();
+    LeerComandos();
     return 0;
 }
 
@@ -95,6 +96,7 @@ void LeerArchivo(ListaConjuntos *lc){
     return;
    }
 
+
    lc->ultimo = NULL;
    lc->universo = NULL;
 
@@ -123,7 +125,18 @@ void LeerArchivo(ListaConjuntos *lc){
       //printf("%p %p",lc->universo,lc->ultimo);
       crearConjunto(lc,cname,elementsC,cantElem);
    }
-
    fclose(fpuntero);
-   return;
+   /*
+   fscanf(fpuntero, "%s %s", str1, str2);
+   string2elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
+
+   while(feof(fpuntero) == 0){
+      char str3[40];
+      fscanf(fpuntero, "%s %s %s", str1, str2, str3);
+      string2elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
+   }
+   fflush(fpuntero);
+   fclose(fpuntero); //Da error aca
+
+   return;*/
 }

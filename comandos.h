@@ -76,3 +76,34 @@ char **str2elementos(char str[], int *cantElem){
    *cantElem = ContPalabras;
    return puntero;
 }
+void NuevoConjuntoCom(){
+   char Cadena[400];
+   char c;
+   int i=0;
+
+   while(c != 13){
+      c = getchar();
+      Cadena[i++] = c;
+   }
+   str2elementos(Cadena,i);
+}
+void LeerComandos(){ //Leer comandos realmente debe ir en el int main
+
+   char Cadena[403];
+   char c;
+   int i=0;
+
+   while(c != 13){
+      c = getchar();
+      Cadena[i++] = c;
+      if(strcmp("new",Cadena)){ //Se esta metiendo a pesar de no tener la cadena new
+         printf("Por que carajo se metio %s",Cadena);
+         NuevoConjuntoCom();
+      }
+
+   }
+   return;
+}
+
+
+
