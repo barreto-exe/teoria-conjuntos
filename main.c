@@ -68,8 +68,7 @@ void LeerArchivo(){
    printf("\n");
 
    //scanf("%s",NombreArchivo);
-   //char str1[50], str2[256];
-   char linea[1000];
+   char linea[1024];
    FILE *fpuntero = NULL;
    fpuntero = fopen(NombreArchivo, "r");
 
@@ -80,9 +79,22 @@ void LeerArchivo(){
    }
 
    while(fgets(linea, 1024, fpuntero)){
-      printf("%s \n",linea);
-      //fscanf(fpuntero, "%s %s", str1, str2);
-      //str2elementos(str2); //Este lee los conjuntos, no se a quien se lo quieras pasar
+      char *inicio, *fin, cname[26];
+
+      inicio = fin = linea;
+      fin = strstr(fin,":");
+      strncpy(cname,inicio,fin-inicio);
+      fin += 2;
+
+      /*
+      Una corrida en frío de lo anterior:
+
+         linea = "universo12345: hola-como-estas"
+         cname = "universo12345"
+         fin = "hola-como-estas"
+      */
+
+      str2elementos(fin); //Este lee los conjuntos, no se a quien se lo quieras pasar
    }
 
    fclose(fpuntero);
