@@ -1,2 +1,2 @@
 universo12345: hola-como-estas
-conjunto 1: hola-como-estas2
+conjunto 1: hola-como-estas

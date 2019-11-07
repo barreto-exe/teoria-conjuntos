@@ -63,28 +63,29 @@ void test(){
 
 }
 void LeerArchivo(){
-   char NombreArchivo[40] = "file.txts";
+   char NombreArchivo[40] = "file.txt";
    printf("Ingrese el nombre del archivo que desea abrir: \n");
+   printf("\n");
 
    //scanf("%s",NombreArchivo);
-   char str1[50], str2[255];
+   //char str1[50], str2[256];
+   char linea[1000];
    FILE *fpuntero = NULL;
    fpuntero = fopen(NombreArchivo, "r");
 
    if(!fpuntero){
-    printf("No se encontro el archivo %s",NombreArchivo);
+    printf("No se encontro el archivo %s \n",NombreArchivo);
     printf("\n");
     return;
    }
 
-   fscanf(fpuntero, "%s %s", str1, str2);
-   string2elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
-   while(feof(fpuntero) == 0){
-      char str3[40];
-      fscanf(fpuntero, "%s %s %s", str1, str2, str3);
-      string2elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
+   while(fgets(linea, 1024, fpuntero)){
+      printf("%s \n",linea);
+      //fscanf(fpuntero, "%s %s", str1, str2);
+      //str2elementos(str2); //Este lee los conjuntos, no se a quien se lo quieras pasar
    }
-   fclose(fpuntero); //Da error aca
+
+   fclose(fpuntero);
+
    return;
 }
-
