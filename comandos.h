@@ -9,7 +9,7 @@ int ContarLetras(char str[],int inicio){
     }
     return Cont;
 }
-char **Elementos(char str[]){
+char **string2elementos(char str[]){
    char **puntero = NULL;
 
    /*if(!strstr(str,'-')){

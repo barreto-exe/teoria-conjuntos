@@ -1,7 +1,9 @@
 #include "conjuntos.h"
 #include "comandos.h"
-#include<stdio.h>
+#include <stdio.h>
 #include<stdlib.h>
+#include <string.h>
+
 void test();
 
 void LeerArchivo();
@@ -9,7 +11,7 @@ void LeerArchivo();
 int main()
 {
     LeerArchivo();
-    test();
+    //test();
     return 0;
 }
 
@@ -61,18 +63,26 @@ void test(){
 
 }
 void LeerArchivo(){
-   char NombreArchivo[40];
-   printf("Ingrese el nombre del archivo que desea abrir: ");
-   scanf("%s",NombreArchivo);
-   char str1[10], str2[40];
-   FILE *fpuntero;
-   fpuntero = fopen ("file.txt", "r");
+   char NombreArchivo[40] = "file.txts";
+   printf("Ingrese el nombre del archivo que desea abrir: \n");
+
+   //scanf("%s",NombreArchivo);
+   char str1[50], str2[255];
+   FILE *fpuntero = NULL;
+   fpuntero = fopen(NombreArchivo, "r");
+
+   if(!fpuntero){
+    printf("No se encontro el archivo %s",NombreArchivo);
+    printf("\n");
+    return;
+   }
+
    fscanf(fpuntero, "%s %s", str1, str2);
-   Elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
+   string2elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
    while(feof(fpuntero) == 0){
       char str3[40];
       fscanf(fpuntero, "%s %s %s", str1, str2, str3);
-      Elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
+      string2elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
    }
    fclose(fpuntero); //Da error aca
    return;
