@@ -62,14 +62,22 @@ char **str2elementos(char str[], int *cantElem){
    return puntero;
 }
 void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
-   char Cadena[400];
+   char *Cadena, *NombreConj;
    char c;
    int i=0;
 
+   Cadena = (char*)malloc(sizeof(char));
+
    while(c != 13){
       c = getchar();
+      Cadena = (char*)realloc(sizeof(char));
       Cadena[i++] = c;
+      if(strcmp(c,':')){
+         *NombreConj=(char*)malloc(i*sizeof(char));
+         strcpy(*NombreConj);
+      }
    }
+
 
    char **var = str2elementos(Cadena,&i);
    crearConjunto(clist,cnombre,var,i);
@@ -77,14 +85,16 @@ void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
 }
 void LeerComandos(ListaConjuntos *clist){ //Leer comandos realmente debe ir en el int main
 
-   char Cadena[403], *nombreConj;
+   char *Cadena;
    char c;
    int i=0;
 
+   Cadena = (char*)malloc(sizeof(char));
    //nombreConj = (char *) malloc(sizeof(char)*???????);
 
    while(c != 13){
       c = getchar();
+      Cadena = (char*)realloc(sizeof(char));
       Cadena[i++] = c;
       if(strcmp("new",Cadena) == 0){ //Se esta metiendo a pesar de no tener la cadena new
          NuevoConjuntoCom(clist,nombreConj);
