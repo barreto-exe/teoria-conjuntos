@@ -10,10 +10,14 @@ void LeerArchivo();
 
 int main()
 {
+    ListaConjuntos clist;
+    clist.ultimo = NULL;
+    clist.universo = NULL;
+
     //LeerArchivo();
     //test();
     //test2();
-    LeerComandos();
+    LeerComandos(&clist);
     return 0;
 }
 

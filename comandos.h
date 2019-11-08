@@ -61,7 +61,7 @@ char **str2elementos(char str[], int *cantElem){
    *cantElem = ContPalabras;
    return puntero;
 }
-void NuevoConjuntoCom(){
+void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
    char Cadena[400];
    char c;
    int i=0;
@@ -70,23 +70,29 @@ void NuevoConjuntoCom(){
       c = getchar();
       Cadena[i++] = c;
    }
-   str2elementos(Cadena,i);
-}
-void LeerComandos(){ //Leer comandos realmente debe ir en el int main
 
-   char Cadena[403];
+   char **var = str2elementos(Cadena,&i);
+   crearConjunto(clist,cnombre,var,i);
+
+}
+void LeerComandos(ListaConjuntos *clist){ //Leer comandos realmente debe ir en el int main
+
+   char Cadena[403], *nombreConj;
    char c;
    int i=0;
+
+   //nombreConj = (char *) malloc(sizeof(char)*???????);
 
    while(c != 13){
       c = getchar();
       Cadena[i++] = c;
-      if(strcmp("new",Cadena)){ //Se esta metiendo a pesar de no tener la cadena new
-         printf("Por que carajo se metio %s",Cadena);
-         NuevoConjuntoCom();
+      if(strcmp("new",Cadena) == 0){ //Se esta metiendo a pesar de no tener la cadena new
+         NuevoConjuntoCom(clist,nombreConj);
+         break;
       }
-
    }
+
+
    return;
 }
 
