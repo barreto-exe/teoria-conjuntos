@@ -48,6 +48,9 @@ char **str2elementos(char str[], int *cantElem){
 
    for(i=0 ; i<ContPalabras ; i++){
       strncpy(puntero[i],inicio,fin-inicio);
+
+      puntero[i][fin-inicio]='\0';
+
       inicio=++fin;
       fin=strstr(inicio,"-");
 
@@ -57,10 +60,12 @@ char **str2elementos(char str[], int *cantElem){
 
       //printf("%s-",puntero[i]);
    }
+      //printf("\n");
 
    *cantElem = ContPalabras;
    return puntero;
 }
+
 void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
    char *Cadena, *NombreConj;
    char c;
@@ -70,11 +75,11 @@ void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
 
    while(c != 13){
       c = getchar();
-      Cadena = (char*)realloc(sizeof(char));
+      //Cadena = (char*)realloc(sizeof(char));
       Cadena[i++] = c;
       if(strcmp(c,':')){
          *NombreConj=(char*)malloc(i*sizeof(char));
-         strcpy(*NombreConj);
+         //strcpy(*NombreConj);
       }
    }
 
@@ -94,10 +99,10 @@ void LeerComandos(ListaConjuntos *clist){ //Leer comandos realmente debe ir en e
 
    while(c != 13){
       c = getchar();
-      Cadena = (char*)realloc(sizeof(char));
+      //Cadena = (char*)realloc(sizeof(char));
       Cadena[i++] = c;
       if(strcmp("new",Cadena) == 0){ //Se esta metiendo a pesar de no tener la cadena new
-         NuevoConjuntoCom(clist,nombreConj);
+         //NuevoConjuntoCom(clist,nombreConj);
          break;
       }
    }
@@ -106,5 +111,66 @@ void LeerComandos(ListaConjuntos *clist){ //Leer comandos realmente debe ir en e
    return;
 }
 
+int esCrearConj(char *cad){
 
+   char *aux = strstr(cad,":");
 
+   if(aux){
+      char *auxNew = strstr(cad,"new");
+
+      if(auxNew && auxNew[3] == ' '){
+         return 1;
+      }
+   }
+
+   return 0;
+}
+
+int esOpAlgebra(char *cad){
+   return 0;
+}
+
+void LeerComandosLuis(ListaConjuntos *clist){
+   char cad[1024];
+   printf("/*********Teoria de Conjuntos*********/ \n");
+   printf("-Operaciones algebraicas. \n");
+   printf("-Crear conjuntos. \n");
+   printf("-Para salir escriba 'exit'. \n");
+   printf("\n");
+
+   do{
+      scanf(" %[^\n]",cad);
+      printf("\n");
+
+      if(esCrearConj(cad)){
+         char *strElementos = strstr(cad, ":"), *iniName = cad + 4;
+
+         char *cnombre = (char *) malloc(sizeof(char)*26);
+         strncpy(cnombre,iniName,strElementos-iniName);
+
+         cnombre[strElementos-iniName] = '\0';
+
+         int cantElem = 0;
+         strElementos += 2;
+         char **elementos = str2elementos(strElementos,&cantElem);
+
+         if(!buscarConjunto(*clist,cnombre)){
+            crearConjunto(clist,cnombre,elementos,cantElem);
+            imprimirConjunto(*clist,cnombre);
+         }else{
+            printf("El conjunto %s ya existe. \n",cnombre);
+            free(cnombre);
+         }
+
+         printf("\n");
+      }
+      else if (esOpAlgebra(cad)){
+
+      }
+      else if (strcmp(cad,"exit")){ //Si no es exit, es op invalida.
+         printf("Operacion invalida. \n");
+      }
+
+   }while(strcmp(cad,"exit")); //Mientras la cadena sea distinta de exit
+
+}

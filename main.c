@@ -14,10 +14,17 @@ int main()
     clist.ultimo = NULL;
     clist.universo = NULL;
 
-    //LeerArchivo();
+    LeerArchivo(&clist);
+    printf("\n");
+    imprimirConjunto(clist,"universo");
+    printf("\n");
+
+    LeerComandosLuis(&clist);
+
+
+
     //test();
     //test2();
-    LeerComandos(&clist);
     return 0;
 }
 
@@ -80,17 +87,14 @@ void test2(){
    imprimirConjunto(clist,"universo");
    printf("\n");
 
-   imprimirConjunto(clist, "A");
-
-
-}
+   }
 
 void LeerArchivo(ListaConjuntos *lc){
    char NombreArchivo[40] = "file.txt";
    printf("Ingrese el nombre del archivo que desea abrir: \n");
+   //scanf("%s",NombreArchivo);
    printf("\n");
 
-   //scanf("%s",NombreArchivo);
    char linea[1024];
    FILE *fpuntero = NULL;
    fpuntero = fopen(NombreArchivo, "r");
@@ -107,35 +111,24 @@ void LeerArchivo(ListaConjuntos *lc){
 
 
    while(fgets(linea, 1024, fpuntero)){
-      char *inicio, *fin, *cname;
+      if(strstr(linea,":")){
+         char *inicio, *fin, *cname;
 
-      linea[strlen(linea)-1]='\0'; //Esto corrige el caracter '\n' al final de la linea
+         linea[strlen(linea)-1]='\0'; //Esto corrige el caracter '\n' al final de la linea
 
-      cname = (char *) malloc(sizeof(char)*26);
+         cname = (char *) malloc(sizeof(char)*26);
 
-      inicio = fin = linea;
-      fin = strstr(fin,":");
-      strncpy(cname,inicio,fin-inicio);
-      fin += 2;
+         inicio = fin = linea;
+         fin = strstr(fin,":");
+         strncpy(cname,inicio,fin-inicio);
+         fin += 2;
 
 
-      int cantElem;
-      char **elementsC = str2elementos(fin,&cantElem);
+         int cantElem;
+         char **elementsC = str2elementos(fin,&cantElem);
 
-      crearConjunto(lc,cname,elementsC,cantElem);
+         crearConjunto(lc,cname,elementsC,cantElem);
+      }
    }
    fclose(fpuntero);
-   /*
-   fscanf(fpuntero, "%s %s", str1, str2);
-   string2elementos(str2); //Este lee el universo, no se a quien se lo quieras pasar
-
-   while(feof(fpuntero) == 0){
-      char str3[40];
-      fscanf(fpuntero, "%s %s %s", str1, str2, str3);
-      string2elementos(str3); //Este lee los conjuntos, no se a quien se lo quieras pasar
-   }
-   fflush(fpuntero);
-   fclose(fpuntero); //Da error aca
-
-   return;*/
 }
