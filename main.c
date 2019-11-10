@@ -1,8 +1,9 @@
 #include "conjuntos.h"
 #include "comandos.h"
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void test();
 
@@ -17,9 +18,7 @@ int main()
     LeerArchivo(&clist);
     printf("\n");
 
-    LeerComandosLuis(&clist);
-
-
+    LeerComandos(&clist);
 
     //test();
     return 0;
@@ -74,21 +73,23 @@ void test(){
 }
 
 void LeerArchivo(ListaConjuntos *lc){
-   char NombreArchivo[40] = "file.txt";
-   printf("Ingrese el nombre del archivo que desea abrir: \n");
-   //scanf("%s",NombreArchivo);
-   printf("\n");
-
-   char linea[1024];
+   char NombreArchivo[40] = "file.txt", linea[1024];
    FILE *fpuntero = NULL;
-   fpuntero = fopen(NombreArchivo, "r");
 
-   if(!fpuntero){
-    printf("No se encontro el archivo %s \n",NombreArchivo);
-    printf("\n");
-    return;
-   }
+   do{
+      printf("Ingrese el nombre del archivo que desea abrir: \n");
+      scanf("%s",NombreArchivo);
+      printf("\n");
 
+      fpuntero = fopen(NombreArchivo, "r");
+
+      if(!fpuntero){
+         printf("No se encontro el archivo %s \n",NombreArchivo);
+         printf("\n");
+         sleep(3);
+         system("clear");
+      }
+   }while(!fpuntero);
 
    lc->ultimo = NULL;
    lc->universo = NULL;

@@ -85,7 +85,7 @@ int esOpAlgebra(char *cad){
    return 0;
 }
 
-void LeerComandosLuis(ListaConjuntos *clist){
+void LeerComandos(ListaConjuntos *clist){
    char cad[1024];
    printf("/*********Teoria de Conjuntos*********/ \n");
    printf("-Operaciones algebraicas. \n");
