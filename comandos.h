@@ -9,6 +9,35 @@ int ContarLetras(char str[],int inicio){
     }
     return Cont;
 }
+
+void removerCaracteres(char *cadena, char *caracteres) {
+  int indiceCadena = 0, indiceCadenaLimpia = 0;
+  int deberiaAgregarCaracter = 1;
+  // Recorrer cadena carácter por carácter
+  while (cadena[indiceCadena]) {
+    // Primero suponemos que la letra sí debe permanecer
+    deberiaAgregarCaracter = 1;
+    int indiceCaracteres = 0;
+    // Recorrer los caracteres prohibidos
+    while (caracteres[indiceCaracteres]) {
+      // Y si la letra actual es uno de los caracteres, ya no se agrega
+      if (cadena[indiceCadena] == caracteres[indiceCaracteres]) {
+        deberiaAgregarCaracter = 0;
+      }
+      indiceCaracteres++;
+    }
+    // Dependiendo de la variable de arriba, la letra se agrega a la "nueva
+    // cadena"
+    if (deberiaAgregarCaracter) {
+      cadena[indiceCadenaLimpia] = cadena[indiceCadena];
+      indiceCadenaLimpia++;
+    }
+    indiceCadena++;
+  }
+  // Al final se agrega el carácter NULL para terminar la cadena
+  cadena[indiceCadenaLimpia] = 0;
+}
+
 char **str2elementos(char str[], int *cantElem){
 
    char **puntero = NULL;
@@ -109,11 +138,31 @@ void LeerComandos(ListaConjuntos *clist){
 
          int cantElem = 0;
          strElementos += 2;
+
+         removerCaracteres(strElementos," ");
+
+         /*char *blancosAux = strElementos;
+
+         int i = 0;
+
+         while (blancosAux[0] != '\0')
+         {
+           if (blancosAux[0] == ' ')
+           {
+              strcpy(strElementos+i,blancosAux+1);
+           }
+           else{
+              blancosAux++;
+           }
+           i++;
+         }*/
+
          char **elementos = str2elementos(strElementos,&cantElem);
 
          if(!buscarConjunto(*clist,cnombre)){
             crearConjunto(clist,cnombre,elementos,cantElem);
             imprimirConjunto(*clist,cnombre);
+            printf("\n");
          }else{
             printf("El conjunto %s ya existe. \n",cnombre);
             free(cnombre);

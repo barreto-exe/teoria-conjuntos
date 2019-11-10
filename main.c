@@ -108,6 +108,7 @@ void LeerArchivo(ListaConjuntos *lc){
          strncpy(cname,inicio,fin-inicio);
          fin += 2;
 
+         removerCaracteres(fin," ");
 
          int cantElem;
          char **elementsC = str2elementos(fin,&cantElem);
