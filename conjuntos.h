@@ -10,7 +10,6 @@ typedef struct elemento {
 typedef struct conjunto {
     char *nombre;
     struct elemento *primero;
-                    //*ultimo;
     struct conjunto *next;
 } Conjunto;
 
@@ -63,17 +62,6 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
     if (!clist->universo)
         clist->universo = nuevo;
     else{
-
-        /*
-        //printf("%p %p",clist->universo,clist->ultimo);
-        if(!strcmp(nombre,"ABC")){
-         for(int i=0;i<=cantElem;i++){
-            printf("%s \n",elementos[i]);
-         }
-        }
-        */
-
-
         if(!elementosPertenecen(clist->universo,elementos,cantElem)){
             free(nuevo);
             printf("No se pudo crear el conjunto %s, porque tiene elementos invalidos\n",nombre);

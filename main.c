@@ -16,15 +16,12 @@ int main()
 
     LeerArchivo(&clist);
     printf("\n");
-    imprimirConjunto(clist,"universo");
-    printf("\n");
 
     LeerComandosLuis(&clist);
 
 
 
     //test();
-    //test2();
     return 0;
 }
 
@@ -75,19 +72,6 @@ void test(){
 
 
 }
-
-void test2(){
-
-   ListaConjuntos clist;
-   clist.ultimo = NULL;
-   clist.universo = NULL;
-
-   LeerArchivo(&clist);
-
-   imprimirConjunto(clist,"universo");
-   printf("\n");
-
-   }
 
 void LeerArchivo(ListaConjuntos *lc){
    char NombreArchivo[40] = "file.txt";

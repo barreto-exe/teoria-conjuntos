@@ -66,54 +66,6 @@ char **str2elementos(char str[], int *cantElem){
    return puntero;
 }
 
-void NuevoConjuntoCom(ListaConjuntos *clist, char *cnombre){
-   char *Cadena, *NombreConj;
-   char c;
-   int i=0;
-
-   Cadena = (char*)malloc(sizeof(char));
-   int auxbandera=0;
-   while(c != '\n'){
-      c = getchar();
-      Cadena = (char*)realloc(Cadena, sizeof(char));
-      Cadena[i++] = c; //Da error aqui
-      if(c == ':' && auxbandera==0){
-         i--;
-         Cadena[i]='\0';
-         NombreConj = (char*)malloc(i*sizeof(char));
-         strcpy(NombreConj,Cadena);
-         strcpy(Cadena,"");
-         i=0;
-         auxbandera=1;
-      }
-   }
-   char **var = str2elementos(Cadena,&i);
-   crearConjunto(clist,NombreConj,var,i);
-
-}
-void LeerComandos(ListaConjuntos *clist){ //Leer comandos realmente debe ir en el int main
-
-   char *Cadena;
-   char c;
-   int i=0;
-
-   Cadena = (char*)malloc(sizeof(char));
-   //nombreConj = (char *) malloc(sizeof(char)*???????);
-
-   while(c != '\n'){
-      c = getchar();
-      Cadena = (char*)realloc(Cadena, sizeof(char));
-      Cadena[i++] = c;
-      if(strcmp("new ",Cadena) == 0){ //Se esta metiendo a pesar de no tener la cadena new
-         NuevoConjuntoCom(clist);
-         break;
-      }
-   }
-
-
-   return;
-}
-
 int esCrearConj(char *cad){
 
    char *aux = strstr(cad,":");
@@ -139,6 +91,8 @@ void LeerComandosLuis(ListaConjuntos *clist){
    printf("-Operaciones algebraicas. \n");
    printf("-Crear conjuntos. \n");
    printf("-Para salir escriba 'exit'. \n");
+   printf("-");
+   imprimirConjunto(*clist,"universo");
    printf("\n");
 
    do{
@@ -172,6 +126,7 @@ void LeerComandosLuis(ListaConjuntos *clist){
       }
       else if (strcmp(cad,"exit")){ //Si no es exit, es op invalida.
          printf("Operacion invalida. \n");
+         printf("\n");
       }
 
    }while(strcmp(cad,"exit")); //Mientras la cadena sea distinta de exit
