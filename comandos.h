@@ -111,7 +111,17 @@ int esCrearConj(char *cad){
 }
 
 int esOpAlgebra(char *cad){
-   return 0;
+   //Esta funcion verifica que la cadena tenga parentesis balanceados.
+
+   int contAbre = 0, contCierra = 0;
+
+   for(int i=0; i<strlen(cad); i++)
+      if(cad[i] == '(') contAbre++;
+
+   for(int i=0; i<strlen(cad); i++)
+      if(cad[i] == ')') contCierra++;
+
+   return contAbre == contCierra;
 }
 
 void LeerComandos(ListaConjuntos *clist){
@@ -141,22 +151,6 @@ void LeerComandos(ListaConjuntos *clist){
 
          removerCaracteres(strElementos," ");
 
-         /*char *blancosAux = strElementos;
-
-         int i = 0;
-
-         while (blancosAux[0] != '\0')
-         {
-           if (blancosAux[0] == ' ')
-           {
-              strcpy(strElementos+i,blancosAux+1);
-           }
-           else{
-              blancosAux++;
-           }
-           i++;
-         }*/
-
          char **elementos = str2elementos(strElementos,&cantElem);
 
          if(!buscarConjunto(*clist,cnombre)){
@@ -172,9 +166,10 @@ void LeerComandos(ListaConjuntos *clist){
       }
       else if (esOpAlgebra(cad)){
 
+
       }
       else if (strcmp(cad,"exit")){ //Si no es exit, es op invalida.
-         printf("Operacion invalida. \n");
+         printf("Operacion o sintaxis invalida. \n");
          printf("\n");
       }
 
