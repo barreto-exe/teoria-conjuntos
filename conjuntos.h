@@ -65,6 +65,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
         if(!elementosPertenecen(clist->universo,elementos,cantElem)){
             free(nuevo);
             printf("No se pudo crear el conjunto %s, porque tiene elementos invalidos\n",nombre);
+
             return;
         }
     }
@@ -141,7 +142,7 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
 
     //Si el elemento no existe, retorno
     if( !caux ){
-        printf("No se encontro el conjunto %s\n", cnombre);
+        printf("No se pudo imprimir el conjunto %s\n", cnombre);
         return;
     }
 
@@ -165,7 +166,7 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
     */
     char *newname = (char *) malloc(strlen(conja)+strlen(conjb)+1);
     strcpy(newname,conja);
-    strcat(newname,"u");
+    strcat(newname,"+");
     strcat(newname,conjb);
 
     Conjunto *a   = buscarConjunto(*clist,conja),
@@ -174,6 +175,7 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
     if(!(a && b)){
         printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
+
         return;
     }
 

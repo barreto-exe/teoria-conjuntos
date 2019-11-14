@@ -97,7 +97,7 @@ char **str2elementos(char str[], int *cantElem){
 
       //printf("%s-",puntero[i]);
    }
-      //printf("\n");
+      //
 
    *cantElem = ContPalabras;
    return puntero;
@@ -189,11 +189,19 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
       return cad;
    }
    if(cad[Men] == '-'){
+      if(cad[Men+1] == '('){
+         char CadAux[256];
+         for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
+            CadAux[k]=cad[i];
+         }
+         char *ConjA =  OpAlgebra(clist, CadAux);
+         invertirConjunto(clist,ConjA);
+         return cad;
+      }
       char *ConjA =  OpAlgebra(clist, CadDere);
       invertirConjunto(clist,ConjA);
       return cad;
    }
-
    /*Si no cumple ninguna de las condiciones*/
    return cad;
 }
@@ -206,11 +214,11 @@ void LeerComandos(ListaConjuntos *clist){
    printf("-Para salir escriba 'exit'. \n");
    printf("-");
    imprimirConjunto(*clist,"universo");
-   printf("\n");
+
 
    do{
-      scanf(" %[^\n]",cad);
       printf("\n");
+      scanf(" %[^\n]",cad);
 
       if(esCrearConj(cad)){
          char *strElementos = strstr(cad, ":"), *iniName = cad + 4;
@@ -230,23 +238,18 @@ void LeerComandos(ListaConjuntos *clist){
          if(!buscarConjunto(*clist,cnombre)){
             crearConjunto(clist,cnombre,elementos,cantElem);
             imprimirConjunto(*clist,cnombre);
-            printf("\n");
+
          }else{
             printf("El conjunto %s ya existe. \n",cnombre);
             free(cnombre);
          }
 
-         printf("\n");
+
       }
       else if (esOpAlgebra(cad)){
          OpAlgebra(clist,cad);
-         imprimirConjunto(*clist,"-F");
+         imprimirConjunto(*clist,cad);
      }
-      else if (strcmp(cad,"exit")){ //Si no es exit, es op invalida.
-         printf("Operacion o sintaxis invalida. \n");
-         printf("\n");
-      }
-
-   }while(strcmp(cad,"exit")); //Mientras la cadena sea distinta de exit
+   }while(1); //Mientras siempre
 
 }

@@ -20,7 +20,7 @@ int main()
     printf("\n");
 
     LeerComandos(&clist);
-//    printf("%s",clist->ultimo->nombre); //Por que carajos da error aqui_
+    //printf("%s",clist->ultimo->nombre); //Por que carajos da error aqui_
     //test();
     return 0;
 }
@@ -78,8 +78,8 @@ void LeerArchivo(ListaConjuntos *lc){
    FILE *fpuntero = NULL;
 
    do{
-      printf("Ingrese el nombre del archivo que desea abrir: \n");
-      scanf("%s",NombreArchivo);
+      //printf("Ingrese el nombre del archivo que desea abrir: \n");
+      //scanf("%s",NombreArchivo);
       printf("\n");
 
       fpuntero = fopen(NombreArchivo, "r");

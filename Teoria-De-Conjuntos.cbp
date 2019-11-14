@@ -33,6 +33,7 @@
 		</Compiler>
 		<Unit filename="comandos.h" />
 		<Unit filename="conjuntos.h" />
+		<Unit filename="file.txt" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
