@@ -12,19 +12,20 @@
 	<stdlib.h>
 	<string.h>
 
-1573322067 source:/media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/main.c
+1573699156 source:/media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/main.c
 	"conjuntos.h"
 	"comandos.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<unistd.h>
 
-1573226220 /media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/conjuntos.h
+1573704422 /media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/conjuntos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1573325637 /media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/comandos.h
+1573733993 /media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/comandos.h
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
@@ -32,5 +33,9 @@
 1573425338 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/comandos.h
 	<stdio.h>
 	<string.h>
+	<stdlib.h>
+
+1573663403 /media/sf_Programacion/3er Semestre/aaa/Teoria-de-Conjuntos/TAD.h
+	<stdio.h>
 	<stdlib.h>
 

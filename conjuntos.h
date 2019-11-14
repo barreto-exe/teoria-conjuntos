@@ -100,9 +100,10 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = clist.universo;
     int encontrado = 0;
-
+    char Hola[1000];
     while(!encontrado && caux){
-        if( strcmp(caux->nombre,cnombre) == 0 ){
+        strcpy(Hola,caux->nombre);
+        if(strcmp(caux->nombre,cnombre) == 0 ){
             encontrado = 1;
         }
         else{

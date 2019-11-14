@@ -31,7 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="TAD.h" />
 		<Unit filename="comandos.h" />
 		<Unit filename="conjuntos.h" />
 		<Unit filename="main.c">

@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#define Union +
+#define Interseccion x
+#define Complemento -
 
 int ContarLetras(char str[],int inicio){
     int Cont;
@@ -36,6 +39,11 @@ void removerCaracteres(char *cadena, char *caracteres) {
   }
   // Al final se agrega el carácter NULL para terminar la cadena
   cadena[indiceCadenaLimpia] = 0;
+}
+
+void LimpiarCadena(char *cad){
+   for(int i=0;cad[i] != '\0'; i++)
+      cad[i]='\0';
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -124,6 +132,72 @@ int esOpAlgebra(char *cad){
    return contAbre == contCierra;
 }
 
+int BuscarMenorPre(char cad[], int tam){
+   int Pivote, pivoteAux = 4;
+   for(int i = 0; i<tam ; i++){
+      int aux=0;
+      if(cad[i] == '('){
+            for(int j=i ; cad[j] != ')' ; j++);
+      }
+      if(cad[i] == '-'){
+         aux=3;
+         if(pivoteAux>aux){
+            pivoteAux=aux;
+            Pivote=i;
+         }
+      }
+      if(cad[i] == 'x'){
+         aux=2;
+         if(pivoteAux>aux){
+            pivoteAux=aux;
+            Pivote=i;
+         }
+      }
+      if(cad[i] == '+'){
+         aux=1;
+         if(pivoteAux>aux){
+            pivoteAux=aux;
+            Pivote=i;
+         }
+      }
+   }
+   return Pivote;
+}
+
+char *OpAlgebra(ListaConjuntos *clist,char cad[]){
+   char CadIzqui[512], CadDere[512];
+
+   int Men = BuscarMenorPre(cad,strlen(cad));
+
+
+   for(int i=0 ; i<Men; i++){
+      CadIzqui[i]=cad[i];
+   }
+   for(int j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){ //unirConjunto(clist,OpAlegbra(clist, CadIzqui),OpAlgebra(clist, CadDere));
+      CadDere[j] = cad[i];
+   }
+   if(cad[Men] == '+'){
+      char *ConjA =  OpAlgebra(clist, CadIzqui);
+      char *ConjB =  OpAlgebra(clist, CadDere);
+      unirConjunto(clist,ConjA,ConjB);
+      return cad;
+   }
+   if(cad[Men] == 'x'){
+      char *ConjA =  OpAlgebra(clist, CadIzqui);
+      char *ConjB =  OpAlgebra(clist, CadDere);
+      intersectarConjunto(clist,ConjA,ConjB);
+      return cad;
+   }
+   if(cad[Men] == '-'){
+      char *ConjA =  OpAlgebra(clist, CadDere);
+      invertirConjunto(clist,ConjA);
+      return cad;
+   }
+
+   /*Si no cumple ninguna de las condiciones*/
+   return cad;
+}
+
 void LeerComandos(ListaConjuntos *clist){
    char cad[1024];
    printf("/*********Teoria de Conjuntos*********/ \n");
@@ -165,9 +239,9 @@ void LeerComandos(ListaConjuntos *clist){
          printf("\n");
       }
       else if (esOpAlgebra(cad)){
-
-
-      }
+         OpAlgebra(clist,cad);
+         imprimirConjunto(*clist,"-F");
+     }
       else if (strcmp(cad,"exit")){ //Si no es exit, es op invalida.
          printf("Operacion o sintaxis invalida. \n");
          printf("\n");

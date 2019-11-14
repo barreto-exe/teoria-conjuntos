@@ -1,78 +1,52 @@
+#ifndef TAD_H
+#define TAD_H
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct nodo{
-   char cad[1024];
-   struct nodo *next;
-}Nodo;
+#define MAX_PILA 50
 
 typedef struct{
-   Nodo *top;
-}Pila;
+   char elem[MAX_PILA];
+   int tope;
+} Pila;
 
 typedef struct{
-   Nodo *ini;
-   Nodo *fin;
-}Cola;
+   Conjunto *ini;
+   Conjunto *fin;
+   char c;
+} Cola;
 
 /*Operaciones de pila*/
 
-Pila *NuevaPila(){
-   Pila *s;
-   if(((s = (Pila *)malloc(sizeof(Pila)))) == NULL)
-      exit(1);
-   s->top = NULL;
-   return s;
-}
-
-void BorrarPila(Pila *s){
-   Nodo *aux;
-   if(!s)
-      return;
-   for(aux = s->top ; aux ; aux = s->top){
-      s->top = aux->next;
-      free(aux);
-   }
-}
-
-int vaciaPila(Pila *s){
-   if(!s || !s->top)
-      return 1;
-   return 0;
-}
-
-int top(Pila *s, char *cadena){
-   if(s && s->top){
-      strcpy(cadena,s->top->cad);
-      return 1;
-   }
-   return 0;
-}
-
-int pop(Pila *s, char *cadena){
-   if(s && s->top){
-      Nodo * aux = s->top;
-      s->top = aux->next;
-      strcpy(cadena,aux->cad);
-      free(aux);
-      return 1;
-}
-return 0;
-}
-
-int push(Pila *s, char *cadena){
-   Nodo *newp;
-   if(!s)
+int push(Pila *pilap,char dato){
+   if(pilap->tope==MAX_PILA-1)
       return 0;
-   if((newp = (Nodo*)malloc(sizeof(Nodo))) == NULL)
-      exit(1);
-   newp->next = s->top;
-   strcpy(newp->cad,cadena);
-   s->top = newp;
+   pilap->elem[++pilap->tope]=dato;
    return 1;
 }
 
-/*Operaciones de Cola*/
+int top(Pila *pilap,char *dato){
+   if(pilap->tope==-1)
+      return 0;
+   *dato=pilap->elem[pilap->tope];
+   return 1;
+}
+
+int pop(Pila *pilap,char *dato){
+   if(pilap->tope==-1)
+      return 0;
+   *dato=pilap->elem[pilap->tope--];
+   return 1;
+}
+
+int vacia(Pila *pilap){
+   return pilap->tope==-1;
+}
+
+void anula(Pila *pilap){
+   pilap->tope=-1;
+}
+
+/*Operaciones de cola*/
 
 Cola *NuevaCola(){
    Cola *q;
@@ -80,17 +54,37 @@ Cola *NuevaCola(){
       exit(1);
    q->ini = q->fin = NULL;
    return q;
-}
+};
 
-void BorrarCola(Cola *q){
-   Nodo *aux;
+void AnulaCola(Cola *q){
+   Conjunto *curp;
    if(!q)
       return;
-   for(aux = q->ini ; aux ; aux = q->ini){
-      q->ini = aux->next;
-      free(aux);
+   for(curp = q->ini ; curp ; curp = q->ini){
+      q->ini = curp->next;
+      free(curp);
    }
    q->fin = NULL;
+}
+
+int frente(Cola *q, char *car){
+   if(q && q->ini){
+      *car = q->ini->nombre;
+      return 1;
+   }
+   return 0;
+}
+
+int Desencolar(Cola *q){
+   if(q && q->ini){
+      Conjunto* aux = q->ini;
+      q->ini = aux->next;
+      if(q->fin == aux)
+         q->fin = NULL;
+      free(aux);
+      return 1;
+   }
+   return 0;
 }
 
 int vaciaCola(Cola *q){
@@ -99,22 +93,14 @@ int vaciaCola(Cola *q){
    return 0;
 }
 
-int frente(Cola *q, char *cadena){
-   if(q && q->ini){
-      strcpy(cadena,q->ini->cad);
-      return 1;
-   }
-   return 0;
-}
-
-int Encolar(Cola *q, char *cadena){
-   Nodo *newp;
+int Encolar(Cola *q, Conjunto *C){
+   Conjunto *newp;
    if(!q)
       return 0;
-   if((newp = (Nodo*)malloc(sizeof(Nodo))) == NULL)
+   if((newp = (Conjunto *)malloc(sizeof(Conjunto))) == NULL)
       exit(1);
    newp->next = NULL;
-   strcpy(newp->cad,cadena);
+   newp = C ;
    if(!q->ini){
       q->ini = q->fin = newp;
    }else{
@@ -124,16 +110,4 @@ int Encolar(Cola *q, char *cadena){
    return 1;
 }
 
-int Descolar(Cola *q, char *cadena){
-   if(q && q->ini){
-      Nodo *aux = q->ini;
-      q->ini = aux->next;
-   if(q->fin == aux)
-      q->fin = NULL;
-   strcpy(cadena,aux->cad);
-   free(aux);
-   return 1;
-   }
-   return 0;
-}
-
+#endif

@@ -1,5 +1,6 @@
 #include "conjuntos.h"
 #include "comandos.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +20,7 @@ int main()
     printf("\n");
 
     LeerComandos(&clist);
-
+//    printf("%s",clist->ultimo->nombre); //Por que carajos da error aqui_
     //test();
     return 0;
 }
