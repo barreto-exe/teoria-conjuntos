@@ -41,9 +41,22 @@ void removerCaracteres(char *cadena, char *caracteres) {
   cadena[indiceCadenaLimpia] = 0;
 }
 
-void LimpiarCadena(char *cad){
-   for(int i=0;cad[i] != '\0'; i++)
+void LimpiarCadena(char *cad,int tam){
+   for(int i=0; i<tam ; i++)
       cad[i]='\0';
+}
+
+void AddParentesis(char *cad){
+      int i=strlen(cad)+1;
+      cad[i]=')';
+      for(i=0; i<strlen(cad);i++){
+         cad[i]=cad[i+1];
+      }
+      cad[0]=' ';
+      for(i = strlen(cad); i>0 ; i--){
+         cad[i+1]=cad[i];
+      }
+      cad[0]='(';
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -133,11 +146,11 @@ int esOpAlgebra(char *cad){
 }
 
 int BuscarMenorPre(char cad[], int tam){
-   int Pivote, pivoteAux = 4;
+   int Pivote=-1, pivoteAux = 4;
    for(int i = 0; i<tam ; i++){
       int aux=0;
       if(cad[i] == '('){
-            for(int j=i ; cad[j] != ')' ; j++);
+            for( ; cad[i] != ')' ; i++);
       }
       if(cad[i] == '-'){
          aux=3;
@@ -166,14 +179,15 @@ int BuscarMenorPre(char cad[], int tam){
 
 char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    char CadIzqui[512], CadDere[512];
-
+   LimpiarCadena(CadIzqui,512);
+   LimpiarCadena(CadDere,512);
    int Men = BuscarMenorPre(cad,strlen(cad));
+   int i,j;
 
-
-   for(int i=0 ; i<Men; i++){
+   for(i=0 ; i<Men; i++){
       CadIzqui[i]=cad[i];
    }
-   for(int j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){ //unirConjunto(clist,OpAlegbra(clist, CadIzqui),OpAlgebra(clist, CadDere));
+   for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){
       CadDere[j] = cad[i];
    }
    if(cad[Men] == '+'){
@@ -191,11 +205,13 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    if(cad[Men] == '-'){
       if(cad[Men+1] == '('){
          char CadAux[256];
+         LimpiarCadena(CadAux,256);
          for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
             CadAux[k]=cad[i];
          }
-         char *ConjA =  OpAlgebra(clist, CadAux);
-         invertirConjunto(clist,ConjA);
+         char *Conj = OpAlgebra(clist,CadAux); //AddParentesis(OpAlgebra(clist,CadAux));
+        // AddParentesis(Conj);         (AxB) /= AxB
+         invertirConjunto(clist,Conj);
          return cad;
       }
       char *ConjA =  OpAlgebra(clist, CadDere);
