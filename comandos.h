@@ -224,11 +224,16 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
 
 void LeerComandos(ListaConjuntos *clist){
    char cad[1024];
-   printf("/*********Teoria de Conjuntos*********/ \n");
-   printf("-Operaciones algebraicas. \n");
-   printf("-Crear conjuntos. \n");
-   printf("-Para salir escriba 'exit'. \n");
-   printf("-");
+   printf("   _________________________________    \n");
+   printf(" _/|:::::|TEORIA DE CONJUNTOS|:::::|\\_  \n");
+   printf("|                                     | \n");
+   printf("| -Crear conjuntos.                   | \n");
+   printf("|                                     | \n");
+   printf("| -Operaciones algebraicas            | \n");
+   printf("|  de conjuntos.                      | \n");
+   printf("|_____________________________________| \n\n");
+   //printf("-Para salir escriba 'exit'. \n");
+   //printf("-");
    imprimirConjunto(*clist,"universo");
 
 

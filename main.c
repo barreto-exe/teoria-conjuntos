@@ -19,6 +19,9 @@ int main()
     LeerArchivo(&clist);
     printf("\n");
 
+    //sleep(3);
+    system("clear");
+
     LeerComandos(&clist);
     //printf("%s",clist->ultimo->nombre); //Por que carajos da error aqui_
     //test();
@@ -87,8 +90,6 @@ void LeerArchivo(ListaConjuntos *lc){
       if(!fpuntero){
          printf("No se encontro el archivo %s \n",NombreArchivo);
          printf("\n");
-         sleep(3);
-         system("clear");
       }
    }while(!fpuntero);
 

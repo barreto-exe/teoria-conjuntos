@@ -51,6 +51,7 @@ int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
     return 1;
 }
 
+void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre); //Lo pongo aquí porque lo requiere la siguiente función.
 void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
     /*
         -elementos es un arreglo de strings. Cada string es un elemento.
@@ -70,7 +71,8 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
         }
     }
 
-    nuevo->nombre = nombre;
+    nuevo->nombre = (char *) malloc(sizeof(char)*strlen(nombre)+1);
+    strcpy(nuevo->nombre,nombre);
 
     //El nuevo conjunto será el ultimo
     if (clist->ultimo)
@@ -96,14 +98,15 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
         nuevo->primero = NULL;
     }
 
+   copiarConjuntoParentensis(clist,nombre);
 }
 
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = clist.universo;
     int encontrado = 0;
-    char Hola[1000];
+    //char Hola[1000];
     while(!encontrado && caux){
-        strcpy(Hola,caux->nombre);
+        //strcpy(Hola,caux->nombre);
         if(strcmp(caux->nombre,cnombre) == 0 ){
             encontrado = 1;
         }
@@ -137,6 +140,35 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
     return aux;
 }
 
+void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
+   if(strstr(cnombre,"(")) return;
+
+   char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
+   strcpy(nombrecopia,"(");
+   strcat(nombrecopia,cnombre);
+   strcat(nombrecopia,")");
+
+   char *vacio[] = {};
+   crearConjunto(clist,nombrecopia,vacio,0);
+   //El primero del conjunto nuevo tiene el mismo valor que el primero del viejo, igual que el next (NULL).
+   Conjunto *copia = buscarConjunto(*clist,nombrecopia);
+   Conjunto *original = buscarConjunto(*clist,cnombre);
+
+   if(!original->primero) return; //Si original no tiene primero, la copia tampoco tendrá.n
+
+   char *valor = original->primero->valor;
+   copia->primero= crearElemento(valor);
+
+   Elemento *elemA = buscarConjunto(*clist,cnombre)->primero,
+            *elemB = buscarConjunto(*clist,nombrecopia)->primero;
+
+   while(elemA->next){
+      elemA = elemA->next;
+      elemB->next = crearElemento(elemA->valor);
+      elemB = elemB->next;
+   }
+}
+
 void imprimirConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = buscarConjunto(clist,cnombre);
 
@@ -149,13 +181,14 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
 
     Elemento *eleaux = caux->primero;
 
-    printf("%s: ", cnombre);
+    printf("%s: { ", cnombre);
     for(;eleaux!=NULL;eleaux=eleaux->next){
         if(eleaux->next)
             printf("%s - ",eleaux->valor);
         else
-            printf("%s \n",eleaux->valor);
+            printf("%s",eleaux->valor);
     }
+    printf(" }\n");
 
 }
 
@@ -175,7 +208,7 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
     if(!(a && b)){
         printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
-
+        printf("%s: %p | %s: %p \n",conja,a,conjb,b);
         return;
     }
 
@@ -214,6 +247,8 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
             auxB = auxB->next;
         }while(auxB);
     }
+
+   copiarConjuntoParentensis(clist,newname);
 }
 
 void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
@@ -232,7 +267,8 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
              *axb = buscarConjunto(*clist,newname);
 
     if(!(a && b)){
-        printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
+        printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion.\n",newname);
+        printf("%s: %p | %s: %p \n",conja,a,conjb,b);
         return;
     }
 
@@ -257,6 +293,7 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
         auxA = auxA->next;
     }while(auxA);
 
+   copiarConjuntoParentensis(clist,newname);
 }
 
 void invertirConjunto(ListaConjuntos *clist, char *namec){
@@ -294,4 +331,6 @@ void invertirConjunto(ListaConjuntos *clist, char *namec){
         }
         univAux = univAux->next;
     }while(univAux);
+
+   copiarConjuntoParentensis(clist,newname);
 }
