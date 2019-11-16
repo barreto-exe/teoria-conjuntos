@@ -46,17 +46,15 @@ void LimpiarCadena(char *cad,int tam){
       cad[i]='\0';
 }
 
-void AddParentesis(char *cad){
-      int i=strlen(cad)+1;
-      cad[i]=')';
-      for(i=0; i<strlen(cad);i++){
-         cad[i]=cad[i+1];
-      }
-      cad[0]=' ';
-      for(i = strlen(cad); i>0 ; i--){
-         cad[i+1]=cad[i];
-      }
-      cad[0]='(';
+char *AddParentesis(char *cad){
+     if(strstr(cad,"(")){
+         return;
+     }
+      char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
+      strcpy(nombrecopia,"(");
+      strcat(nombrecopia,cad);
+      strcat(nombrecopia,")");
+      return nombrecopia;
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -190,6 +188,15 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){
       CadDere[j] = cad[i];
    }
+    if(cad[0] == '('){
+      char CadAux[256];
+      LimpiarCadena(CadAux,256);
+      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
+         CadAux[k]=cad[i];
+      }
+      char *Conj = OpAlgebra(clist,CadAux);
+      Conj = AddParentesis(Conj);
+   }
    if(cad[Men] == '+'){
       char *ConjA =  OpAlgebra(clist, CadIzqui);
       char *ConjB =  OpAlgebra(clist, CadDere);
@@ -209,8 +216,8 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
          for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
             CadAux[k]=cad[i];
          }
-         char *Conj = OpAlgebra(clist,CadAux); //AddParentesis(OpAlgebra(clist,CadAux));
-        // AddParentesis(Conj);         (AxB) /= AxB
+         char *Conj = OpAlgebra(clist,CadAux);
+         Conj = AddParentesis(Conj);
          invertirConjunto(clist,Conj);
          return cad;
       }

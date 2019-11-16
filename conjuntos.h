@@ -52,6 +52,7 @@ int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
 }
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre); //Lo pongo aquí porque lo requiere la siguiente función.
+
 void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
     /*
         -elementos es un arreglo de strings. Cada string es un elemento.
