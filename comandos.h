@@ -188,28 +188,19 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){
       CadDere[j] = cad[i];
    }
-    if(cad[0] == '('){
-      char CadAux[256];
-      LimpiarCadena(CadAux,256);
-      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
-         CadAux[k]=cad[i];
-      }
-      char *Conj = OpAlgebra(clist,CadAux);
-      Conj = AddParentesis(Conj);
-   }
    if(cad[Men] == '+'){
       char *ConjA =  OpAlgebra(clist, CadIzqui);
       char *ConjB =  OpAlgebra(clist, CadDere);
       unirConjunto(clist,ConjA,ConjB);
       return cad;
    }
-   if(cad[Men] == 'x'){
+   else if(cad[Men] == 'x'){
       char *ConjA =  OpAlgebra(clist, CadIzqui);
       char *ConjB =  OpAlgebra(clist, CadDere);
       intersectarConjunto(clist,ConjA,ConjB);
       return cad;
    }
-   if(cad[Men] == '-'){
+   else if(cad[Men] == '-'){
       if(cad[Men+1] == '('){
          char CadAux[256];
          LimpiarCadena(CadAux,256);
@@ -224,6 +215,15 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
       char *ConjA =  OpAlgebra(clist, CadDere);
       invertirConjunto(clist,ConjA);
       return cad;
+   }
+   else if(cad[0] == '('){
+      char CadAux[256];
+      LimpiarCadena(CadAux,256);
+      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
+         CadAux[k]=cad[i];
+      }
+      char *Conj = OpAlgebra(clist,CadAux);
+      Conj = AddParentesis(Conj);
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
