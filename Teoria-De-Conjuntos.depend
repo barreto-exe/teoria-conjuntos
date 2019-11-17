@@ -7,7 +7,7 @@
 	<string.h>
 	<unistd.h>
 
-1573862753 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/conjuntos.h
+1573997436 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/conjuntos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -30,7 +30,7 @@
 	<string.h>
 	<stdlib.h>
 
-1573862601 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/comandos.h
+1574000604 /media/sf_AyP_II/Proyecto1/Teoria-de-Conjuntos/comandos.h
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
