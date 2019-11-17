@@ -28,10 +28,6 @@ Elemento *crearElemento(char *valor){
 }
 
 int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
-    /*
-        Si el conjunto es vacío (tiene 0 elementos), entonces siempre
-        es subconjunto de cualquier conjunto.
-    */
     for(int i=0; i < cantElem; i++){
         Elemento *aux = c->primero;
         int encontrado = 0;
@@ -44,21 +40,14 @@ int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
                 aux = aux->next;
             }
         }
-
         if(!encontrado) return 0;
     }
-
     return 1;
 }
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre); //Lo pongo aquí porque lo requiere la siguiente función.
 
 void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
-    /*
-        -elementos es un arreglo de strings. Cada string es un elemento.
-        -El nuevo conjunto se le asigna como next al ultimo de la lista conjunto
-    */
-
     Conjunto *nuevo = (Conjunto *) malloc(sizeof(Conjunto));
 
     if (!clist->universo)
@@ -105,9 +94,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = clist.universo;
     int encontrado = 0;
-    //char Hola[1000];
     while(!encontrado && caux){
-        //strcpy(Hola,caux->nombre);
         if(strcmp(caux->nombre,cnombre) == 0 ){
             encontrado = 1;
         }
@@ -115,16 +102,13 @@ Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
             caux = caux->next;
         }
     }
-
     if(!encontrado) return NULL;
-
     return caux;
 }
 
 Elemento *buscarElemento(Conjunto c, char *enombre){
     Elemento *aux = c.primero;
     int encontrado = 0;
-
     while(!encontrado && aux){
         if( strcmp(aux->valor,enombre) == 0 ){
             encontrado = 1;
@@ -133,17 +117,14 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
             aux = aux->next;
         }
     }
-
     if(!encontrado){
         return NULL;
     }
-
     return aux;
 }
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
    if(strstr(cnombre,"(")) return;
-
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
    strcpy(nombrecopia,"(");
    strcat(nombrecopia,cnombre);
@@ -151,6 +132,7 @@ void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
 
    char *vacio[] = {};
    crearConjunto(clist,nombrecopia,vacio,0);
+
    //El primero del conjunto nuevo tiene el mismo valor que el primero del viejo, igual que el next (NULL).
    Conjunto *copia = buscarConjunto(*clist,nombrecopia);
    Conjunto *original = buscarConjunto(*clist,cnombre);
@@ -179,7 +161,6 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
         return;
     }
 
-
     Elemento *eleaux = caux->primero;
 
     printf("%s: { ", cnombre);
@@ -190,14 +171,9 @@ void imprimirConjunto(ListaConjuntos clist, char *cnombre){
             printf("%s",eleaux->valor);
     }
     printf(" }\n");
-
 }
 
 void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
-    /*
-      -Ambos conjuntos deben existir
-      -Primero compruebo que exista AUB, sino, creo dicho conjunto.
-    */
     char *newname = (char *) malloc(strlen(conja)+strlen(conjb)+1);
     strcpy(newname,conja);
     strcat(newname,"+");
@@ -219,8 +195,6 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
     crearConjunto(clist,newname,newElem,0);
 
     if(!a->primero && !b->primero) return;
-
-
 
     Elemento *auxA = a->primero, *auxB = b->primero, *eleAux;
     Conjunto *newC= buscarConjunto(*clist,newname);
@@ -253,11 +227,6 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 }
 
 void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
-    /*
-      -Ambos conjuntos deben existir.
-      -Primero compruebo que exista AxB, sino, lo creo.
-    */
-
     char *newname = (char *) malloc(strlen(conja)+strlen(conjb)+1);
     strcpy(newname,conja);
     strcat(newname,"x");
@@ -298,11 +267,6 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 }
 
 void invertirConjunto(ListaConjuntos *clist, char *namec){
-    /*
-      -Si no existe -A, lo creo.
-      -El inverso de un conjunto vacío es universo.
-    */
-
     char *newname = (char *) malloc(strlen(namec)+1);
     strcpy(newname,"-");
     strcat(newname,namec);

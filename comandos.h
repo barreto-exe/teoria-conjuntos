@@ -68,14 +68,12 @@ char **str2elementos(char str[], int *cantElem){
       *cantElem = 1;
       return puntero;
    }
-
    int ContPalabras=0, i;
    for(i=0 ; str[i]!='\0' ;i++){
          if(str[i]=='-'){
             ContPalabras++;
          }
    }
-
    if(i>0) ContPalabras++; //Si la cadena es vacía, se queda en 0.
 
    int j=0;
@@ -105,19 +103,13 @@ char **str2elementos(char str[], int *cantElem){
       if(!fin){
          fin = str + strlen(str);
       }
-
-      //printf("%s-",puntero[i]);
    }
-      //
-
    *cantElem = ContPalabras;
    return puntero;
 }
 
 int esCrearConj(char *cad){
-
    char *aux = strstr(cad,":");
-
    if(aux){
       char *auxNew = strstr(cad,"new");
 
@@ -125,21 +117,17 @@ int esCrearConj(char *cad){
          return 1;
       }
    }
-
    return 0;
 }
 
 int esOpAlgebra(char *cad){
    //Esta funcion verifica que la cadena tenga parentesis balanceados.
-
    int contAbre = 0, contCierra = 0;
-
    for(int i=0; i<strlen(cad); i++)
       if(cad[i] == '(') contAbre++;
 
    for(int i=0; i<strlen(cad); i++)
       if(cad[i] == ')') contCierra++;
-
    return contAbre == contCierra;
 }
 
@@ -239,8 +227,6 @@ void LeerComandos(ListaConjuntos *clist){
    printf("| -Operaciones algebraicas            | \n");
    printf("|  de conjuntos.                      | \n");
    printf("|_____________________________________| \n\n");
-   //printf("-Para salir escriba 'exit'. \n");
-   //printf("-");
    imprimirConjunto(*clist,clist->universo->nombre);
 
 
