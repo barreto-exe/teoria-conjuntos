@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#define Union +
+#define Interseccion x
+#define Complemento -
 
 int ContarLetras(char str[],int inicio){
     int Cont;
@@ -44,7 +47,9 @@ void LimpiarCadena(char *cad,int tam){
 }
 
 char *AddParentesis(char *cad){
-
+     if(strstr(cad,"(")){
+         return;
+     }
       char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
       strcpy(nombrecopia,"(");
       strcat(nombrecopia,cad);
@@ -84,6 +89,7 @@ void EliminarInnecesarios(char cad[]){
    TrimAll(cad);
 }
 
+
 char **str2elementos(char str[], int *cantElem){
 
    char **puntero = NULL;
@@ -95,14 +101,12 @@ char **str2elementos(char str[], int *cantElem){
       *cantElem = 1;
       return puntero;
    }
-
    int ContPalabras=0, i;
    for(i=0 ; str[i]!='\0' ;i++){
          if(str[i]=='-'){
             ContPalabras++;
          }
    }
-
    if(i>0) ContPalabras++; //Si la cadena es vacía, se queda en 0.
 
    int j=0;
@@ -132,19 +136,13 @@ char **str2elementos(char str[], int *cantElem){
       if(!fin){
          fin = str + strlen(str);
       }
-
-      //printf("%s-",puntero[i]);
    }
-      //
-
    *cantElem = ContPalabras;
    return puntero;
 }
 
 int esCrearConj(char *cad){
-
    char *aux = strstr(cad,":");
-
    if(aux){
       char *auxNew = strstr(cad,"new");
 
@@ -152,21 +150,17 @@ int esCrearConj(char *cad){
          return 1;
       }
    }
-
    return 0;
 }
 
 int esOpAlgebra(char *cad){
    //Esta funcion verifica que la cadena tenga parentesis balanceados.
-
    int contAbre = 0, contCierra = 0;
-
    for(int i=0; i<strlen(cad); i++)
       if(cad[i] == '(') contAbre++;
 
    for(int i=0; i<strlen(cad); i++)
       if(cad[i] == ')') contCierra++;
-
    return contAbre == contCierra;
 }
 
@@ -246,21 +240,11 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    else if(cad[0] == '('){
       char CadAux[256];
       LimpiarCadena(CadAux,256);
-      if(cad[1] == '('){
-         for(int k=0,i=1 ; cad[i-1] != ')' && cad[i] != '\0' ; i++, k++){
-            CadAux[k]=cad[i];
-         }
-         char *ConjAux = OpAlgebra(clist,CadAux);
-         copiarConjuntoParentensis(clist,ConjAux);
-         ConjAux = AddParentesis(ConjAux);
-         return cad;
-      }
-      for(int k=0,i=0 ; cad[i] != ')' && cad[i] != '\0' ; i++, k++){
+      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
          CadAux[k]=cad[i];
       }
       char *Conj = OpAlgebra(clist,CadAux);
       Conj = AddParentesis(Conj);
-      return cad;
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
@@ -276,8 +260,6 @@ void LeerComandos(ListaConjuntos *clist){
    printf("| -Operaciones algebraicas            | \n");
    printf("|  de conjuntos.                      | \n");
    printf("|_____________________________________| \n\n");
-   //printf("-Para salir escriba 'exit'. \n");
-   //printf("-");
    imprimirConjunto(*clist,clist->universo->nombre);
 
 
@@ -311,7 +293,7 @@ void LeerComandos(ListaConjuntos *clist){
 
 
       }
-      else if(esOpAlgebra(cad)){
+      else if (esOpAlgebra(cad)){
          EliminarInnecesarios(cad);
          OpAlgebra(clist,cad);
          imprimirConjunto(*clist,cad);
