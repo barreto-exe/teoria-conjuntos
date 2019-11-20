@@ -278,7 +278,7 @@ void LeerComandos(ListaConjuntos *clist){
    printf("|_____________________________________| \n\n");
    //printf("-Para salir escriba 'exit'. \n");
    //printf("-");
-   imprimirConjunto(*clist,"universo");
+   imprimirConjunto(*clist,clist->universo->nombre);
 
 
    do{
