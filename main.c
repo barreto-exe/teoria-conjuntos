@@ -15,7 +15,6 @@ int main()
     ListaConjuntos clist;
     clist.ultimo = NULL;
     clist.universo = NULL;
-
     LeerArchivo(&clist);
     printf("\n");
 

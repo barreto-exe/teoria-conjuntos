@@ -1,9 +1,6 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#define Union +
-#define Interseccion x
-#define Complemento -
 
 int ContarLetras(char str[],int inicio){
     int Cont;
@@ -47,14 +44,44 @@ void LimpiarCadena(char *cad,int tam){
 }
 
 char *AddParentesis(char *cad){
-     if(strstr(cad,"(")){
-         return;
-     }
+
       char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
       strcpy(nombrecopia,"(");
       strcat(nombrecopia,cad);
       strcat(nombrecopia,")");
       return nombrecopia;
+}
+
+void TrimAll(char *cad){
+   int i=0,j=0;
+
+   while(cad[j]== ' ')
+      j += 1;
+
+   while(cad[j] != '\0'){
+      cad[i++] = cad[j];
+      if(cad[j] != ' '){
+         j++;
+      }
+      else{
+         while(cad[j] == ' ')
+            j += 1;
+      }
+   }
+
+   if(i>0 && cad[i-1]==' '){
+      cad[i-1] = '\0';
+   }else{
+      cad[i] = '\0';
+   }
+}
+
+void EliminarInnecesarios(char cad[]){
+   for(int i=0; cad[i] != '\0' ; i++){
+      if((cad[i] == '(' && cad[i+1] == '(') || (cad[i] == ')' && cad[i+1] == ')'))
+         cad[i]=' ';
+   }
+   TrimAll(cad);
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -219,11 +246,21 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    else if(cad[0] == '('){
       char CadAux[256];
       LimpiarCadena(CadAux,256);
-      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
+      if(cad[1] == '('){
+         for(int k=0,i=1 ; cad[i-1] != ')' && cad[i] != '\0' ; i++, k++){
+            CadAux[k]=cad[i];
+         }
+         char *ConjAux = OpAlgebra(clist,CadAux);
+         copiarConjuntoParentensis(clist,ConjAux);
+         ConjAux = AddParentesis(ConjAux);
+         return cad;
+      }
+      for(int k=0,i=0 ; cad[i] != ')' && cad[i] != '\0' ; i++, k++){
          CadAux[k]=cad[i];
       }
       char *Conj = OpAlgebra(clist,CadAux);
       Conj = AddParentesis(Conj);
+      return cad;
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
@@ -274,7 +311,8 @@ void LeerComandos(ListaConjuntos *clist){
 
 
       }
-      else if (esOpAlgebra(cad)){
+      else if(esOpAlgebra(cad)){
+         EliminarInnecesarios(cad);
          OpAlgebra(clist,cad);
          imprimirConjunto(*clist,cad);
      }

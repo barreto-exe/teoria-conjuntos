@@ -99,7 +99,8 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
         nuevo->primero = NULL;
     }
 
-   copiarConjuntoParentensis(clist,nombre);
+   //copiarConjuntoParentensis(clist,nombre);
+   return;
 }
 
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
@@ -142,7 +143,8 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
 }
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
-   if(strstr(cnombre,"(")) return;
+
+  // if(strstr(cnombre,"(")) return;
 
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
    strcpy(nombrecopia,"(");
