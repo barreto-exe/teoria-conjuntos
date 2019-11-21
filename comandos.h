@@ -81,20 +81,18 @@ void TrimAll(char *cad){
    }
 }
 
-void EliminarInnecesarios(char cad[]){
+void EliminarInnecesarios(char *cad){
    for(int i=0; cad[i] != '\0' ; i++){
       if((cad[i] == '(' && cad[i+1] == '(')) //Eliminar principio
          cad[i] = ' ';
-         else if(cad[0] == '('){
-            cad[0] = ' ';
-         }
    }
    for(int i = strlen(cad) ; i>0 ; i--){  //Eliminar final
       if(cad[i] == ')' && cad[i-1] == ')')
          cad[i] = ' ';
-         else if(cad[i] == ')' && cad[i+1] == '\0'){
-            cad[i] = ' ';
-      }
+   }
+   if(cad[0] == '(' && cad[strlen(cad)] == ')'){
+      cad[0] = ' ';
+      cad[strlen(cad)] = ' ';
    }
    TrimAll(cad);
 }
