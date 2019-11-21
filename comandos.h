@@ -46,7 +46,7 @@ void LimpiarCadena(char *cad,int tam){
       cad[i]='\0';
 }
 
-char *AddParentesis(char *cad){
+char *AddParentesis(char cad[]){
      if(strstr(cad,"(")){
          return;
      }
@@ -81,7 +81,7 @@ void TrimAll(char *cad){
    }
 }
 
-void EliminarInnecesarios(char *cad){
+void EliminarInnecesarios(char cad[]){
    for(int i=0; cad[i] != '\0' ; i++){
       if((cad[i] == '(' && cad[i+1] == '(')) //Eliminar principio
          cad[i] = ' ';
@@ -89,13 +89,10 @@ void EliminarInnecesarios(char *cad){
    for(int i = strlen(cad) ; i>0 ; i--){  //Eliminar final
       if(cad[i] == ')' && cad[i-1] == ')')
          cad[i] = ' ';
-   }
-   if(cad[0] == '(' && cad[strlen(cad)] == ')'){
-      cad[0] = ' ';
-      cad[strlen(cad)] = ' ';
-   }
+      }
    TrimAll(cad);
 }
+
 
 char **str2elementos(char str[], int *cantElem){
 
@@ -265,22 +262,23 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
       LimpiarCadena(CadAux,256);
       int contParentesis = 1;
       for(int k=0,i=1 ; cad[i] != '\0' ; i++, k++){
-         if(cad[i] == '('){
+         if(cad[i+1] == '('){
             contParentesis++;
          }
-         if(cad[i] == ')'){
+         if(cad[i+1] == ')'){
             contParentesis--;
          }
-         if(cad[i] == ')'){
+         CadAux[k]=cad[i];
+         if(cad[i+1] == ')'){
             if(contParentesis == 0){
                break;
             }
          }
-         CadAux[k]=cad[i];
       }
+      EliminarInnecesarios(CadAux);
       char *Conj = OpAlgebra(clist,CadAux);
-      Conj = AddParentesis(Conj);
-      return Conj;
+      copiarConjuntoParentensis(clist,CadAux);
+      return cad;
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
