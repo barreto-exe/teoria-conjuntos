@@ -20,7 +20,7 @@ int main()
 
     //sleep(3);
     system("clear");
-
+    imprimirHeader(&clist);
     LeerComandos(&clist);
     //printf("%s",clist->ultimo->nombre); //Por que carajos da error aqui_
     //test();
