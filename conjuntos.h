@@ -106,9 +106,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
     Conjunto *caux = clist.universo;
     int encontrado = 0;
-    //char Hola[1000];
     while(!encontrado && caux){
-        //strcpy(Hola,caux->nombre);
         if(strcmp(caux->nombre,cnombre) == 0 ){
             encontrado = 1;
         }
@@ -144,7 +142,12 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
 
-   if(cnombre[0] == '(') return;
+    if(cnombre[0] == '(') return;
+
+    /*int aux = BuscarMenorPre(cnombre,strlen(cnombre));
+     if(aux == -1){
+         return;
+     }*/
 
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
    strcpy(nombrecopia,"(");
