@@ -142,12 +142,12 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
 
-    if(cnombre[0] == '(') return;
+    //if(cnombre[0] == '(') return;
 
-    /*int aux = BuscarMenorPre(cnombre,strlen(cnombre));
-     if(aux == -1){
-         return;
-     }*/
+    int aux = BuscarMenorPre(cnombre,strlen(cnombre));
+    if(aux == -1){
+      return cnombre;
+    }
 
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
    strcpy(nombrecopia,"(");

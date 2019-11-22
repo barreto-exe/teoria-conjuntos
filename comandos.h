@@ -49,7 +49,7 @@ void LimpiarCadena(char *cad,int tam){
 char *AddParentesis(char cad[]){
      int aux = BuscarMenorPre(cad,strlen(cad));
      if(aux == -1){
-         return;
+         return cad;
      }
       char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
       strcpy(nombrecopia,"(");
@@ -80,18 +80,6 @@ void TrimAll(char *cad){
    }else{
       cad[i] = '\0';
    }
-}
-
-void EliminarInnecesarios(char cad[]){
-   for(int i=0; cad[i] != '\0' ; i++){
-      if((cad[i] == '(' && cad[i+1] == '(')) //Eliminar principio
-         cad[i] = ' ';
-   }
-   for(int i = strlen(cad) ; i>0 ; i--){  //Eliminar final
-      if(cad[i] == ')' && cad[i-1] == ')')
-         cad[i] = ' ';
-      }
-   TrimAll(cad);
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -228,40 +216,37 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
       CadDere[j] = cad[i];
    }
    if(buscarConjunto(*clist, cad) == NULL){
-   if(cad[Men] == '+'){
-      char *ConjA =  OpAlgebra(clist, CadIzqui);
-      char *ConjB =  OpAlgebra(clist, CadDere);
-      unirConjunto(clist,ConjA,ConjB);
-      return cad;
-   }
-   else if(cad[Men] == 'x'){
-      char *ConjA =  OpAlgebra(clist, CadIzqui);
-      char *ConjB =  OpAlgebra(clist, CadDere);
-      intersectarConjunto(clist,ConjA,ConjB);
-      return cad;
-   }
-   else if(cad[Men] == '-'){
-      if(cad[Men+1] == '('){
-
+      if(cad[Men] == '+'){
+         char *ConjA =  OpAlgebra(clist, CadIzqui);
+         char *ConjB =  OpAlgebra(clist, CadDere);
+         unirConjunto(clist,ConjA,ConjB);
+         return cad;
       }
-      char *Conj =  OpAlgebra(clist, CadDere);
-      //Conj = AddParentesis(Conj);
-      invertirConjunto(clist,Conj);
-      return cad;
-   }
-    else if(Men == -1 && strlen(cad)>0){
-      int auxMen = BuscarMenorPre(cad,strlen(cad));
-      while(auxMen == -1 && strstr(cad,"(")){
-         cad[0]=' ';
-         cad[strlen(cad)-1]= ' ';
-         TrimAll(cad);
-         auxMen = BuscarMenorPre(cad,strlen(cad));
-      }
-      char *Conj = OpAlgebra(clist,cad);
-      Conj = AddParentesis(Conj);
-
-      return Conj;
-   }
+         else if(cad[Men] == 'x'){
+            char *ConjA =  OpAlgebra(clist, CadIzqui);
+            char *ConjB =  OpAlgebra(clist, CadDere);
+            intersectarConjunto(clist,ConjA,ConjB);
+            return cad;
+         }
+         else if(cad[Men] == '-'){
+            char *Conj =  OpAlgebra(clist, CadDere);
+            Conj = AddParentesis(Conj);
+            invertirConjunto(clist,Conj);
+            return cad;
+         }
+         else if(Men == -1 && strlen(cad)>0){
+            int auxMen = BuscarMenorPre(cad,strlen(cad));
+            while(auxMen == -1 && strstr(cad,"(")){
+               cad[0]=' ';
+               cad[strlen(cad)-1]= ' ';
+               TrimAll(cad);
+               auxMen = BuscarMenorPre(cad,strlen(cad));
+            }
+            char *Conj = OpAlgebra(clist,cad);
+            Conj = AddParentesis(Conj);
+            copiarConjuntoParentensis(clist,cad);
+            return Conj;
+         }
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
@@ -311,7 +296,6 @@ void LeerComandos(ListaConjuntos *clist){
 
       }
       else if (esOpAlgebra(cad)){
-        // EliminarInnecesarios(cad);
          OpAlgebra(clist,cad);
          imprimirConjunto(*clist,cad);
      }
