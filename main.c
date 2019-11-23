@@ -5,8 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 
-void test();
-
 void LeerArchivo();
 
 int main(){
@@ -68,18 +66,3 @@ void LeerArchivo(ListaConjuntos *lc){
    fclose(fpuntero);
 }
 
-int main()
-{
-    ListaConjuntos clist;
-    clist.ultimo = NULL;
-    clist.universo = NULL;
-
-    LeerArchivo(&clist);
-    printf("\n");
-
-    //sleep(3);
-    system("clear");
-
-    LeerComandos(&clist);
-    return 0;
-}

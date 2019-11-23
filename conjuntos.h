@@ -194,7 +194,7 @@ void unirConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
     if(!(a && b)){
         printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion. \n",newname);
-        printf("%s: %p | %s: %p \n",conja,a,conjb,b);
+        printf("%s: %s | %s: %s \n",conja,a?"Existe.":"No existe.",conjb,b?"Existe.":"No existe.");
         return;
     }
 
@@ -247,7 +247,7 @@ void intersectarConjunto(ListaConjuntos *clist, char *conja, char *conjb){
 
     if(!(a && b)){
         printf("Fallo al crear el conjunto %s. Hay conjuntos invalidos en la operacion.\n",newname);
-        printf("%s: %p | %s: %p \n",conja,a,conjb,b);
+        printf("%s: %s | %s: %s \n",conja,a?"Existe.":"No existe.",conjb,b?"Existe.":"No existe.");
         return;
     }
 
@@ -308,3 +308,4 @@ void invertirConjunto(ListaConjuntos *clist, char *namec){
 
    copiarConjuntoParentensis(clist,newname);
 }
+

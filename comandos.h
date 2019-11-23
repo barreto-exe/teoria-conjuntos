@@ -50,11 +50,11 @@ char *AddParentesis(char cad[]){
      if(aux == -1){
          return cad;
      }
-      char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
-      strcpy(nombrecopia,"(");
-      strcat(nombrecopia,cad);
-      strcat(nombrecopia,")");
-      return nombrecopia;
+     char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
+     strcpy(nombrecopia,"(");
+     strcat(nombrecopia,cad);
+     strcat(nombrecopia,")");
+     return nombrecopia;
 }
 
 void TrimAll(char *cad){
@@ -239,7 +239,7 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
                auxMen = BuscarMenorPre(cad,strlen(cad));
             }
             if(buscarConjunto(*clist, cad) == NULL && BuscarMenorPre(cad,strlen(cad)) == -1){
-               printf("Error, ha ingresado un conjunto inexistente\n");
+               printf("Error, el conjunto %s no existe.\n",cad);
                LeerComandos(clist);
             }
             char *Conj = OpAlgebra(clist,cad);
@@ -299,6 +299,6 @@ void LeerComandos(ListaConjuntos *clist){
          OpAlgebra(clist,cad);
          imprimirConjunto(*clist,cad);
      }
-   }while(1); //Mientras siempre
-
+   }while(1); //Para siempre
 }
+
