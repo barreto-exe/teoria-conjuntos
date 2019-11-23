@@ -173,7 +173,7 @@ int BuscarMenorPre(char cad[], int tam){
                   }
                }
                i++;
-            }while(cad[i] != '\0');    //while(cad[i] != ')' && parentesis != 0);
+            }while(cad[i] != '\0');
       }
       if(cad[i] == '-'){
          aux=3;
