@@ -1,10 +1,27 @@
 #include "conjuntos.h"
 #include "comandos.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+void test();
+
+void LeerArchivo();
+
+int main(){
+    ListaConjuntos clist;
+    clist.ultimo = NULL;
+    clist.universo = NULL;
+    LeerArchivo(&clist);
+    printf("\n");
+
+    system("clear");
+    imprimirHeader(&clist);
+    LeerComandos(&clist);
+
+    return 0;
+}
 
 void LeerArchivo(ListaConjuntos *lc){
    char NombreArchivo[40] = "file.txt", linea[1024];

@@ -28,6 +28,8 @@ Elemento *crearElemento(char *valor){
 }
 
 int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
+    //Valida que la matriz de elementos dada sea un subconjunto válido del conjunto dado.
+
     for(int i=0; i < cantElem; i++){
         Elemento *aux = c->primero;
         int encontrado = 0;
@@ -89,6 +91,7 @@ void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int ca
     }
 
    copiarConjuntoParentensis(clist,nombre);
+   return;
 }
 
 Conjunto *buscarConjunto(ListaConjuntos clist, char *cnombre){
@@ -124,7 +127,13 @@ Elemento *buscarElemento(Conjunto c, char *enombre){
 }
 
 void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
-   if(strstr(cnombre,"(")) return;
+    //Crea una copia de un conjunto, añadiéndole paréntesis al nombre.
+
+    int aux = BuscarMenorPre(cnombre,strlen(cnombre));
+    if(aux == -1){
+      return cnombre;
+    }
+
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis
    strcpy(nombrecopia,"(");
    strcat(nombrecopia,cnombre);

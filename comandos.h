@@ -1,15 +1,12 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#define Union +
-#define Interseccion x
-#define Complemento -
 
 int ContarLetras(char str[],int inicio){
+    /*Cuenta las letras entre los separadores "-"*/
     int Cont;
-    for(int i=inicio;i>-1 || str[i]=='-' ;i--){
+    for(int i=inicio ;  i>-1 || str[i]=='-' ;i--)
          Cont++;
-    }
     return Cont;
 }
 
@@ -42,19 +39,43 @@ void removerCaracteres(char *cadena, char *caracteres) {
 }
 
 void LimpiarCadena(char *cad,int tam){
+   /*Rellena la cadena con \0*/
    for(int i=0; i<tam ; i++)
       cad[i]='\0';
 }
 
-char *AddParentesis(char *cad){
-     if(strstr(cad,"(")){
-         return;
+char *AddParentesis(char cad[]){
+     /*Anade parentesis a una cadena dada*/
+     int aux = BuscarMenorPre(cad,strlen(cad));
+     if(aux == -1){
+         return cad;
      }
       char *nombrecopia = (char *) malloc(strlen(cad)+3); //+3: Caracter nulo y dos parentesis
       strcpy(nombrecopia,"(");
       strcat(nombrecopia,cad);
       strcat(nombrecopia,")");
       return nombrecopia;
+}
+
+void TrimAll(char *cad){
+   /*Hace elimina los espacios en blanco de una cadena*/
+   int i=0,j=0;
+   while(cad[j]== ' ')
+      j += 1;
+   while(cad[j] != '\0'){
+      cad[i++] = cad[j];
+      if(cad[j] != ' '){
+         j++;
+      }
+      else{
+         while(cad[j] == ' ')
+            j += 1;
+      }
+   }
+   if(i>0 && cad[i-1]==' '){
+      cad[i-1] = '\0';
+   }else
+      cad[i] = '\0';
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -109,10 +130,10 @@ char **str2elementos(char str[], int *cantElem){
 }
 
 int esCrearConj(char *cad){
+   /*Verifica si un comando es para crear un nuevo conjunto*/
    char *aux = strstr(cad,":");
    if(aux){
       char *auxNew = strstr(cad,"new");
-
       if(auxNew && auxNew[3] == ' '){
          return 1;
       }
@@ -121,7 +142,7 @@ int esCrearConj(char *cad){
 }
 
 int esOpAlgebra(char *cad){
-   //Esta funcion verifica que la cadena tenga parentesis balanceados.
+   /*Esta funcion verifica que la cadena tenga parentesis balanceados*/
    int contAbre = 0, contCierra = 0;
    for(int i=0; i<strlen(cad); i++)
       if(cad[i] == '(') contAbre++;
@@ -132,11 +153,27 @@ int esOpAlgebra(char *cad){
 }
 
 int BuscarMenorPre(char cad[], int tam){
+   /*Busca un pivote de menor precendencia por fuera de los parentesis*/
    int Pivote=-1, pivoteAux = 4;
    for(int i = 0; i<tam ; i++){
       int aux=0;
       if(cad[i] == '('){
-            for( ; cad[i] != ')' ; i++);
+            int parentesis = 1;
+            i++;
+            do{
+               if(cad[i] == '('){
+                  parentesis++;
+               }
+               if(cad[i] == ')'){
+                  parentesis--;
+               }
+               if(cad[i] == ')'){
+                  if(parentesis == 0){
+                     break;
+                  }
+               }
+               i++;
+            }while(cad[i] != '\0');
       }
       if(cad[i] == '-'){
          aux=3;
@@ -164,72 +201,73 @@ int BuscarMenorPre(char cad[], int tam){
 }
 
 char *OpAlgebra(ListaConjuntos *clist,char cad[]){
+   /*Realiza todas las operaciones de forma recursiva*/
    char CadIzqui[512], CadDere[512];
    LimpiarCadena(CadIzqui,512);
    LimpiarCadena(CadDere,512);
    int Men = BuscarMenorPre(cad,strlen(cad));
    int i,j;
-
-   for(i=0 ; i<Men; i++){
+   for(i=0 ; i<Men ; i++)
       CadIzqui[i]=cad[i];
-   }
-   for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){
+   for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++)
       CadDere[j] = cad[i];
-   }
-   if(cad[Men] == '+'){
-      char *ConjA =  OpAlgebra(clist, CadIzqui);
-      char *ConjB =  OpAlgebra(clist, CadDere);
-      unirConjunto(clist,ConjA,ConjB);
-      return cad;
-   }
-   else if(cad[Men] == 'x'){
-      char *ConjA =  OpAlgebra(clist, CadIzqui);
-      char *ConjB =  OpAlgebra(clist, CadDere);
-      intersectarConjunto(clist,ConjA,ConjB);
-      return cad;
-   }
-   else if(cad[Men] == '-'){
-      if(cad[Men+1] == '('){
-         char CadAux[256];
-         LimpiarCadena(CadAux,256);
-         for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
-            CadAux[k]=cad[i];
-         }
-         char *Conj = OpAlgebra(clist,CadAux);
-         Conj = AddParentesis(Conj);
-         invertirConjunto(clist,Conj);
+   if(buscarConjunto(*clist, cad) == NULL){
+      if(cad[Men] == '+'){
+         char *ConjA =  OpAlgebra(clist, CadIzqui);
+         char *ConjB =  OpAlgebra(clist, CadDere);
+         unirConjunto(clist,ConjA,ConjB);
          return cad;
       }
-      char *ConjA =  OpAlgebra(clist, CadDere);
-      invertirConjunto(clist,ConjA);
-      return cad;
-   }
-   else if(cad[0] == '('){
-      char CadAux[256];
-      LimpiarCadena(CadAux,256);
-      for(int k=0,i=Men+2 ; cad[i] != ')' ; i++, k++){
-         CadAux[k]=cad[i];
-      }
-      char *Conj = OpAlgebra(clist,CadAux);
-      Conj = AddParentesis(Conj);
+         else if(cad[Men] == 'x'){
+            char *ConjA =  OpAlgebra(clist, CadIzqui);
+            char *ConjB =  OpAlgebra(clist, CadDere);
+            intersectarConjunto(clist,ConjA,ConjB);
+            return cad;
+         }
+         else if(cad[Men] == '-'){
+            char *Conj =  OpAlgebra(clist, CadDere);
+            Conj = AddParentesis(Conj);
+            invertirConjunto(clist,Conj);
+            return cad;
+         }
+         else if(Men == -1 && strlen(cad)>0){
+            int auxMen = BuscarMenorPre(cad,strlen(cad));
+            while(auxMen == -1 && strstr(cad,"(")){
+               cad[0]=' ';
+               cad[strlen(cad)-1]= ' ';
+               TrimAll(cad);
+               auxMen = BuscarMenorPre(cad,strlen(cad));
+            }
+            if(buscarConjunto(*clist, cad) == NULL && BuscarMenorPre(cad,strlen(cad)) == -1){
+               printf("Error, ha ingresado un conjunto inexistente\n");
+               LeerComandos(clist);
+            }
+            char *Conj = OpAlgebra(clist,cad);
+            Conj = AddParentesis(Conj);
+            copiarConjuntoParentensis(clist,cad);
+            return Conj;
+         }
    }
    /*Si no cumple ninguna de las condiciones*/
    return cad;
 }
 
+void imprimirHeader(ListaConjuntos *clist){
+      /*Imprime la cabecera*/
+      printf("   _________________________________    \n");
+      printf(" _/|:::::|TEORIA DE CONJUNTOS|:::::|\\_  \n");
+      printf("|                                     | \n");
+      printf("| -Crear conjuntos.                   | \n");
+      printf("|                                     | \n");
+      printf("| -Operaciones algebraicas            | \n");
+      printf("|  de conjuntos.                      | \n");
+      printf("|_____________________________________| \n\n");
+      imprimirConjunto(*clist,clist->universo->nombre);
+}
+
 void LeerComandos(ListaConjuntos *clist){
+   /*Lee los comandos*/
    char cad[1024];
-   printf("   _________________________________    \n");
-   printf(" _/|:::::|TEORIA DE CONJUNTOS|:::::|\\_  \n");
-   printf("|                                     | \n");
-   printf("| -Crear conjuntos.                   | \n");
-   printf("|                                     | \n");
-   printf("| -Operaciones algebraicas            | \n");
-   printf("|  de conjuntos.                      | \n");
-   printf("|_____________________________________| \n\n");
-   imprimirConjunto(*clist,clist->universo->nombre);
-
-
    do{
       printf("\n");
       scanf(" %[^\n]",cad);
@@ -252,13 +290,10 @@ void LeerComandos(ListaConjuntos *clist){
          if(!buscarConjunto(*clist,cnombre)){
             crearConjunto(clist,cnombre,elementos,cantElem);
             imprimirConjunto(*clist,cnombre);
-
          }else{
             printf("El conjunto %s ya existe. \n",cnombre);
             free(cnombre);
          }
-
-
       }
       else if (esOpAlgebra(cad)){
          OpAlgebra(clist,cad);
