@@ -18,6 +18,10 @@ typedef struct ListaConjuntos {
                     *ultimo;
 } ListaConjuntos;
 
+/*-------------------------------------------------------*/
+int BuscarMenorPre(char[], int);
+void copiarConjuntoParentensis(ListaConjuntos *, char *);
+/*-------------------------------------------------------*/
 
 Elemento *crearElemento(char *valor){
     Elemento *aux = (Elemento *) malloc(sizeof(Elemento));
@@ -46,8 +50,6 @@ int elementosPertenecen(Conjunto *c, char **elementos, int cantElem){
     }
     return 1;
 }
-
-void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre); //Lo pongo aquí porque lo requiere la siguiente función.
 
 void crearConjunto(ListaConjuntos *clist, char *nombre, char **elementos, int cantElem){
     Conjunto *nuevo = (Conjunto *) malloc(sizeof(Conjunto));
@@ -131,7 +133,7 @@ void copiarConjuntoParentensis(ListaConjuntos *clist, char *cnombre){
 
     int aux = BuscarMenorPre(cnombre,strlen(cnombre));
     if(aux == -1){
-      return cnombre;
+      return;
     }
 
    char *nombrecopia = (char *) malloc(strlen(cnombre)+3); //+3: Caracter nulo y dos parentesis

@@ -1,6 +1,11 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*-------------------------------------------------------*/
+void LeerComandos(ListaConjuntos *);
+void LeerArchivo(ListaConjuntos *);
+/*-------------------------------------------------------*/
 
 int ContarLetras(char str[],int inicio){
     /*Cuenta las letras entre los separadores "-"*/
