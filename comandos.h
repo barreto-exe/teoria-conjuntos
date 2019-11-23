@@ -1,16 +1,12 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#define Union +
-#define Interseccion x
-#define Complemento -
 
 int ContarLetras(char str[],int inicio){
     /*Cuenta las letras entre los separadores "-"*/
     int Cont;
-    for(int i=inicio;i>-1 || str[i]=='-' ;i--){
+    for(int i=inicio ;  i>-1 || str[i]=='-' ;i--)
          Cont++;
-    }
     return Cont;
 }
 
@@ -64,10 +60,8 @@ char *AddParentesis(char cad[]){
 void TrimAll(char *cad){
    /*Hace elimina los espacios en blanco de una cadena*/
    int i=0,j=0;
-
    while(cad[j]== ' ')
       j += 1;
-
    while(cad[j] != '\0'){
       cad[i++] = cad[j];
       if(cad[j] != ' '){
@@ -78,12 +72,10 @@ void TrimAll(char *cad){
             j += 1;
       }
    }
-
    if(i>0 && cad[i-1]==' '){
       cad[i-1] = '\0';
-   }else{
+   }else
       cad[i] = '\0';
-   }
 }
 
 char **str2elementos(char str[], int *cantElem){
@@ -142,7 +134,6 @@ int esCrearConj(char *cad){
    char *aux = strstr(cad,":");
    if(aux){
       char *auxNew = strstr(cad,"new");
-
       if(auxNew && auxNew[3] == ' '){
          return 1;
       }
@@ -216,12 +207,10 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
    LimpiarCadena(CadDere,512);
    int Men = BuscarMenorPre(cad,strlen(cad));
    int i,j;
-   for(i=0 ; i<Men ; i++){
+   for(i=0 ; i<Men ; i++)
       CadIzqui[i]=cad[i];
-   }
-   for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++){
+   for(j=0,i=Men+1 ; cad[i] != '\0' ;i++,j++)
       CadDere[j] = cad[i];
-   }
    if(buscarConjunto(*clist, cad) == NULL){
       if(cad[Men] == '+'){
          char *ConjA =  OpAlgebra(clist, CadIzqui);
@@ -249,7 +238,7 @@ char *OpAlgebra(ListaConjuntos *clist,char cad[]){
                TrimAll(cad);
                auxMen = BuscarMenorPre(cad,strlen(cad));
             }
-            if(buscarConjunto(*clist, cad) == NULL){
+            if(buscarConjunto(*clist, cad) == NULL && BuscarMenorPre(cad,strlen(cad)) == -1){
                printf("Error, ha ingresado un conjunto inexistente\n");
                LeerComandos(clist);
             }
@@ -301,13 +290,10 @@ void LeerComandos(ListaConjuntos *clist){
          if(!buscarConjunto(*clist,cnombre)){
             crearConjunto(clist,cnombre,elementos,cantElem);
             imprimirConjunto(*clist,cnombre);
-
          }else{
             printf("El conjunto %s ya existe. \n",cnombre);
             free(cnombre);
          }
-
-
       }
       else if (esOpAlgebra(cad)){
          OpAlgebra(clist,cad);

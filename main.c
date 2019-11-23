@@ -1,6 +1,5 @@
 #include "conjuntos.h"
 #include "comandos.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,8 +9,7 @@ void test();
 
 void LeerArchivo();
 
-int main()
-{
+int main(){
     ListaConjuntos clist;
     clist.ultimo = NULL;
     clist.universo = NULL;
